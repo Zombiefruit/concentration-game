@@ -1,0 +1,19 @@
+[remap]
+
+importer="oggvorbisstr"
+type="AudioStreamOggVorbis"
+uid="uid://bq5jayf036ide"
+path="res://.godot/imported/dieThrow1.ogg-958199c835d1c754107b84abbf7c87dc.oggvorbisstr"
+
+[deps]
+
+source_file="res://assets/Boardgame Pack/Bonus/dieThrow1.ogg"
+dest_files=["res://.godot/imported/dieThrow1.ogg-958199c835d1c754107b84abbf7c87dc.oggvorbisstr"]
+
+[params]
+
+loop=false
+loop_offset=0
+bpm=0
+beat_count=0
+bar_beats=4

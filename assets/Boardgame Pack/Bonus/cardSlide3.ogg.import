@@ -1,0 +1,19 @@
+[remap]
+
+importer="oggvorbisstr"
+type="AudioStreamOggVorbis"
+uid="uid://bfhvobipwh5ae"
+path="res://.godot/imported/cardSlide3.ogg-63c97304ed9edc6573df0b6904e25ccf.oggvorbisstr"
+
+[deps]
+
+source_file="res://assets/Boardgame Pack/Bonus/cardSlide3.ogg"
+dest_files=["res://.godot/imported/cardSlide3.ogg-63c97304ed9edc6573df0b6904e25ccf.oggvorbisstr"]
+
+[params]
+
+loop=false
+loop_offset=0
+bpm=0
+beat_count=0
+bar_beats=4

@@ -1,0 +1,13 @@
+[gd_resource type="ShaderMaterial" load_steps=2 format=3 uid="uid://08c64hj26nco"]
+
+[ext_resource type="Shader" path="res://shaders/ripple.gdshader" id="1_4a1m1"]
+
+[resource]
+resource_local_to_scene = true
+shader = ExtResource("1_4a1m1")
+shader_parameter/color = Color(0.67737, 0.859698, 0.995912, 1)
+shader_parameter/num_cells = 6.0
+shader_parameter/speed = 3.12
+shader_parameter/smoothness = 1.0
+shader_parameter/angle = 45.0
+shader_parameter/ripple_time = 0.243

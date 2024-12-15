@@ -1,0 +1,11 @@
+[gd_resource type="ShaderMaterial" load_steps=2 format=3 uid="uid://dpaju51im4lxy"]
+
+[ext_resource type="Shader" path="res://shaders/highlight.gdshader" id="1_jmw78"]
+
+[resource]
+shader = ExtResource("1_jmw78")
+shader_parameter/speed = 1.0
+shader_parameter/line_width = 0.15
+shader_parameter/line_color = Color(1, 1, 1, 1)
+shader_parameter/pause_duration = 0.15
+shader_parameter/offset = 2.0

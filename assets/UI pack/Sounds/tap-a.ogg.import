@@ -1,0 +1,19 @@
+[remap]
+
+importer="oggvorbisstr"
+type="AudioStreamOggVorbis"
+uid="uid://clkajesue3nts"
+path="res://.godot/imported/tap-a.ogg-8a3c8a2861a66a2a4badc7d45a333c7b.oggvorbisstr"
+
+[deps]
+
+source_file="res://assets/UI pack/Sounds/tap-a.ogg"
+dest_files=["res://.godot/imported/tap-a.ogg-8a3c8a2861a66a2a4badc7d45a333c7b.oggvorbisstr"]
+
+[params]
+
+loop=false
+loop_offset=0
+bpm=0
+beat_count=0
+bar_beats=4
