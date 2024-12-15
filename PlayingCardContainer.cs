@@ -16,17 +16,17 @@ public partial class PlayingCardContainer : Control
 	[Export]
 	public int rank;
 
-	private bool _cardIsFlipped = false;
-	private bool _isFlipping = false;
+	[Signal]
+	public delegate void CardFlippedEventHandler(int rank, string suit);
+
+	public bool cardIsFlipped = false;
+	public bool allowClicks = true;
 	private AnimationPlayer _animationPlayer;
 	private AudioStreamPlayer2D _audioStreamPlayer;
 	private ShaderMaterial _cardMaterial;
 	private AnimatedSprite2D _cardSprite;
 	private ShaderMaterial _highlightShader = ResourceLoader.Load("res://shaders/highlight-material.tres") as ShaderMaterial;
 	private ShaderMaterial _rippleShader = ResourceLoader.Load("res://shaders/ripple-material.tres") as ShaderMaterial;
-
-	private float _hoverTime = 0.0f;
-	private bool _isHovered = false;
 
 
 	public override void _Ready()
@@ -54,28 +54,17 @@ public partial class PlayingCardContainer : Control
 
 	private void OnArea2DMouseEntered()
 	{
-		GD.Print("Mouse entered");
-		Input.SetDefaultCursorShape(Input.CursorShape.PointingHand);
+		// GD.Print("Mouse entered");
 	}
 
 	private void OnArea2DMouseExited()
 	{
-		GD.Print("Mouse exited");
-		Input.SetDefaultCursorShape(Input.CursorShape.Arrow); // Reset to default
+		// GD.Print("Mouse exited");
 	}
-
-	// private void OnInputEvent(Viewport viewport, InputEvent @event, int shape_idx)
-	// {
-	// 	if (Input.IsMouseButtonPressed(MouseButton.Left))
-	// 	{
-	// 		GD.Print("Mouse button pressed");
-	// 		ToggleCardFlip();
-	// 	}
-	// }
 
 	public void OnInputEvent(Viewport viewport, InputEvent @event, int shape_idx)
 	{
-		if (@event is InputEventMouseButton mouseEvent)
+		if (@event is InputEventMouseButton mouseEvent && allowClicks)
 		{
 			GD.Print("mouse button event at ", mouseEvent.Position);
 
@@ -83,27 +72,36 @@ public partial class PlayingCardContainer : Control
 			{
 				GD.Print("Mouse button pressed");
 				ToggleCardFlip();
+				EmitSignal(SignalName.CardFlipped, rank, suit.ToString());
 			}
 		}
 	}
 
+	public void FlipUp()
+	{
+		_audioStreamPlayer.Play();
+		cardIsFlipped = true;
+		_animationPlayer.Play("flip_card");
+	}
+
+	public void FlipDown()
+	{
+		_audioStreamPlayer.Play();
+		cardIsFlipped = false;
+		_animationPlayer.Play("flip_card_back");
+	}
+
 	private void ToggleCardFlip()
 	{
-		if (!_cardIsFlipped)
+		if (!cardIsFlipped)
 		{
 			GD.Print("Flipping card, since it is not flipped");
-			_audioStreamPlayer.Play();
-			_cardIsFlipped = true;
-			_animationPlayer.Play("flip_card");
-
-
+			FlipUp();
 		}
 		else
 		{
 			GD.Print("Flipping card back, since it is flipped");
-			_audioStreamPlayer.Play();
-			_cardIsFlipped = false;
-			_animationPlayer.Play("flip_card_back");
+			FlipDown();
 		}
 	}
 }

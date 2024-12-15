@@ -50,13 +50,17 @@ script = ExtResource("13_ffywe")
 
 [node name="Cards" type="GridContainer" parent="Game"]
 unique_name_in_owner = true
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
+visible = false
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
 grow_horizontal = 2
 grow_vertical = 2
-size_flags_horizontal = 4
-size_flags_vertical = 4
-columns = 10
+size_flags_horizontal = 6
+size_flags_vertical = 6
+mouse_filter = 2
+columns = 7
 
 [connection signal="pressed" from="UI/VBoxContainer/PlayButton" to="." method="OnPlayButtonPressed"]
