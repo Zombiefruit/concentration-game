@@ -1,45 +1,62 @@
-[gd_scene load_steps=10 format=3 uid="uid://bfnb5ugrj8rmk"]
+[gd_scene load_steps=5 format=3 uid="uid://bfnb5ugrj8rmk"]
 
-[ext_resource type="PackedScene" uid="uid://cse8ho51ny328" path="res://playing_card.tscn" id="1_n1p4c"]
-[ext_resource type="Texture2D" uid="uid://bv84fwuoxh5qk" path="res://assets/Boardgame Pack/PNG/Cards/cardBack_red4.png" id="2_8u7ig"]
-[ext_resource type="Texture2D" uid="uid://qux63mj5moil" path="res://assets/Boardgame Pack/PNG/Cards/cardDiamonds7.png" id="3_wxbv3"]
-[ext_resource type="Texture2D" uid="uid://cryu2l2mo44gc" path="res://assets/Boardgame Pack/PNG/Cards/cardBack_blue4.png" id="4_rbnbl"]
-[ext_resource type="Texture2D" uid="uid://va1dafjj7bu4" path="res://assets/Boardgame Pack/PNG/Cards/cardSpadesJ.png" id="5_ghkec"]
-[ext_resource type="Texture2D" uid="uid://bud1088bhhv8f" path="res://assets/Boardgame Pack/PNG/Cards/cardBack_green2.png" id="6_im2g3"]
-[ext_resource type="Texture2D" uid="uid://cnw0e6tjmgup6" path="res://assets/Boardgame Pack/PNG/Cards/cardClubs10.png" id="7_62xem"]
-[ext_resource type="Texture2D" uid="uid://bobmcvcperddo" path="res://assets/Boardgame Pack/PNG/Cards/cardBack_red5.png" id="8_5ks8j"]
-[ext_resource type="Texture2D" uid="uid://c4b4knmsgs3pj" path="res://assets/Boardgame Pack/PNG/Cards/cardHearts8.png" id="9_vgidn"]
+[ext_resource type="Script" path="res://Main.cs" id="1_qqgg0"]
+[ext_resource type="Material" uid="uid://jypf0n0ht6m" path="res://shaders/diamond-background.tres" id="1_wtv5y"]
+[ext_resource type="Theme" uid="uid://bcopu2osb4hrq" path="res://theme.tres" id="10_iyb1s"]
+[ext_resource type="Script" path="res://GameState.cs" id="13_ffywe"]
 
 [node name="Main" type="Node2D"]
+script = ExtResource("1_qqgg0")
 
-[node name="CanvasLayer" type="CanvasLayer" parent="."]
+[node name="Background" type="CanvasLayer" parent="."]
 layer = -1
 
-[node name="ColorRect" type="ColorRect" parent="CanvasLayer"]
+[node name="ColorRect" type="ColorRect" parent="Background"]
+material = ExtResource("1_wtv5y")
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
 mouse_filter = 2
-color = Color(0.2176, 0.275627, 0.32, 1)
+color = Color(0.0862745, 1, 1, 1)
 
-[node name="PlayingCardContainer" parent="." instance=ExtResource("1_n1p4c")]
-position = Vector2(110, 162)
-backOfCardTexture = ExtResource("2_8u7ig")
-frontOfCardTexture = ExtResource("3_wxbv3")
+[node name="UI" type="CanvasLayer" parent="."]
 
-[node name="PlayingCardContainer2" parent="." instance=ExtResource("1_n1p4c")]
-position = Vector2(276, 162)
-backOfCardTexture = ExtResource("4_rbnbl")
-frontOfCardTexture = ExtResource("5_ghkec")
+[node name="VBoxContainer" type="VBoxContainer" parent="UI"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme = ExtResource("10_iyb1s")
+alignment = 1
 
-[node name="PlayingCardContainer3" parent="." instance=ExtResource("1_n1p4c")]
-position = Vector2(440, 162)
-backOfCardTexture = ExtResource("6_im2g3")
-frontOfCardTexture = ExtResource("7_62xem")
+[node name="PlayButton" type="Button" parent="UI/VBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+mouse_default_cursor_shape = 2
+theme = ExtResource("10_iyb1s")
+text = "Play"
 
-[node name="PlayingCardContainer4" parent="." instance=ExtResource("1_n1p4c")]
-position = Vector2(608, 162)
-backOfCardTexture = ExtResource("8_5ks8j")
-frontOfCardTexture = ExtResource("9_vgidn")
+[node name="GameState" type="Node" parent="."]
+script = ExtResource("13_ffywe")
+
+[node name="Game" type="CanvasLayer" parent="."]
+
+[node name="Cards" type="GridContainer" parent="Game"]
+unique_name_in_owner = true
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+columns = 10
+
+[connection signal="pressed" from="UI/VBoxContainer/PlayButton" to="." method="OnPlayButtonPressed"]

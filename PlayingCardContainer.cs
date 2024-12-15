@@ -1,7 +1,8 @@
 using Godot;
 using System;
 
-public partial class PlayingCardContainer : Node2D
+
+public partial class PlayingCardContainer : Control
 {
 	[Export]
 	public Texture2D backOfCardTexture;
@@ -9,7 +10,14 @@ public partial class PlayingCardContainer : Node2D
 	[Export]
 	public Texture2D frontOfCardTexture;
 
-	private bool _wasClicked = false;
+	[Export]
+	public Suit suit;
+
+	[Export]
+	public int rank;
+
+	private bool _cardIsFlipped = false;
+	private bool _isFlipping = false;
 	private AnimationPlayer _animationPlayer;
 	private AudioStreamPlayer2D _audioStreamPlayer;
 	private ShaderMaterial _cardMaterial;
@@ -23,8 +31,6 @@ public partial class PlayingCardContainer : Node2D
 
 	public override void _Ready()
 	{
-		// Connect("OnArea2DMouseEntered", new Callable(this, nameof(OnMouseEntered)));
-		// Connect("OnArea2DMouseExited", new Callable(this, nameof(OnMouseExited)));
 		_animationPlayer = GetNode<AnimationPlayer>("%CardAnimationPlayer");
 		_audioStreamPlayer = GetNode<AudioStreamPlayer2D>("%CardFlipSound");
 
@@ -38,8 +44,6 @@ public partial class PlayingCardContainer : Node2D
 		_cardSprite.SpriteFrames = spriteFrames;
 		_cardSprite.Animation = "card_flip";
 		_cardSprite.Frame = 0;
-		// _cardSprite.Play("card_flip");
-		// _cardSprite.Material = _highlightShader;
 	}
 
 	// Called every frame. 'delta' is the elapsed time since the previous frame.
@@ -50,44 +54,56 @@ public partial class PlayingCardContainer : Node2D
 
 	private void OnArea2DMouseEntered()
 	{
+		GD.Print("Mouse entered");
 		Input.SetDefaultCursorShape(Input.CursorShape.PointingHand);
-		// _isHovered = true;
-		// _hoverTime = 0.01f;  // Reset the time when hover begins
-		// _highlightShader.SetShaderParameter("hover_time_offset", _hoverTime);
-		// _cardSprite.Material = _highlightShader;
-
 	}
 
 	private void OnArea2DMouseExited()
 	{
+		GD.Print("Mouse exited");
 		Input.SetDefaultCursorShape(Input.CursorShape.Arrow); // Reset to default
-															  // _isHovered = false;
-															  // _hoverTime = 0.0f;  // Optionally reset time when hover ends
-															  // _highlightShader.SetShaderParameter("hover_time_offset", _hoverTime);
-															  // _cardSprite.Material = null;
 	}
 
-	private void OnInputEvent(Viewport viewport, InputEvent @event, int shape_idx)
+	// private void OnInputEvent(Viewport viewport, InputEvent @event, int shape_idx)
+	// {
+	// 	if (Input.IsMouseButtonPressed(MouseButton.Left))
+	// 	{
+	// 		GD.Print("Mouse button pressed");
+	// 		ToggleCardFlip();
+	// 	}
+	// }
+
+	public void OnInputEvent(Viewport viewport, InputEvent @event, int shape_idx)
 	{
-		if (@event is InputEventMouseButton mouseButton && Input.IsMouseButtonPressed(MouseButton.Left))
+		if (@event is InputEventMouseButton mouseEvent)
 		{
-			GD.Print("Left mouse button pressed");
+			GD.Print("mouse button event at ", mouseEvent.Position);
 
-			// _cardSprite.Material = _rippleShader;
-
-			if (!_wasClicked)
+			if (mouseEvent.ButtonIndex == MouseButton.Left && mouseEvent.Pressed)
 			{
-				_wasClicked = true;
-				_animationPlayer.Play("flip_card");
-				_audioStreamPlayer.Play();
+				GD.Print("Mouse button pressed");
+				ToggleCardFlip();
+			}
+		}
+	}
 
-			}
-			else
-			{
-				_wasClicked = false;
-				_animationPlayer.Play("flip_card_back");
-				_audioStreamPlayer.Play();
-			}
+	private void ToggleCardFlip()
+	{
+		if (!_cardIsFlipped)
+		{
+			GD.Print("Flipping card, since it is not flipped");
+			_audioStreamPlayer.Play();
+			_cardIsFlipped = true;
+			_animationPlayer.Play("flip_card");
+
+
+		}
+		else
+		{
+			GD.Print("Flipping card back, since it is flipped");
+			_audioStreamPlayer.Play();
+			_cardIsFlipped = false;
+			_animationPlayer.Play("flip_card_back");
 		}
 	}
 }

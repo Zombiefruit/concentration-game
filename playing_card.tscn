@@ -1,10 +1,27 @@
-[gd_scene load_steps=13 format=3 uid="uid://cse8ho51ny328"]
+[gd_scene load_steps=15 format=3 uid="uid://cse8ho51ny328"]
 
 [ext_resource type="Script" path="res://PlayingCardContainer.cs" id="1_ix3hf"]
+[ext_resource type="Shader" path="res://test.gdshader" id="2_cx7mv"]
 [ext_resource type="AudioStream" uid="uid://cuuj3sc634l63" path="res://assets/Boardgame Pack/Bonus/cardPlace1.ogg" id="4_d0g4c"]
 [ext_resource type="Material" uid="uid://08c64hj26nco" path="res://shaders/ripple-material.tres" id="5_2jir2"]
 [ext_resource type="Texture2D" uid="uid://7iwuudhufo18" path="res://assets/Boardgame Pack/PNG/Cards/cardBack_blue2.png" id="6_mj15s"]
 [ext_resource type="Texture2D" uid="uid://bcudpxr0ogmn8" path="res://assets/Boardgame Pack/PNG/Cards/cardClubs2.png" id="7_3j62i"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_6i68d"]
+shader = ExtResource("2_cx7mv")
+shader_parameter/polar_coordinates = false
+shader_parameter/polar_center = Vector2(0.5, 0.5)
+shader_parameter/polar_zoom = 1.0
+shader_parameter/polar_repeat = 1.0
+shader_parameter/spin_rotation = null
+shader_parameter/spin_speed = 1.0
+shader_parameter/offset = Vector2(0, 0)
+shader_parameter/colour_1 = null
+shader_parameter/colour_2 = null
+shader_parameter/colour_3 = null
+shader_parameter/contrast = 2.0
+shader_parameter/spin_amount = 0.36
+shader_parameter/pixel_filter = 700.0
 
 [sub_resource type="OccluderPolygon2D" id="OccluderPolygon2D_y4isa"]
 polygon = PackedVector2Array(-66, -95, 66, -95, 70, -91, 70, 91, 66, 95, -66, 95, -70, 91, -70, -91)
@@ -31,7 +48,7 @@ length = 0.4
 tracks/0/type = "value"
 tracks/0/imported = false
 tracks/0/enabled = true
-tracks/0/path = NodePath("%PlayingCard:scale")
+tracks/0/path = NodePath("PlayingCard:scale")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/keys = {
@@ -43,7 +60,7 @@ tracks/0/keys = {
 tracks/1/type = "value"
 tracks/1/imported = false
 tracks/1/enabled = true
-tracks/1/path = NodePath("%PlayingCard:frame")
+tracks/1/path = NodePath("PlayingCard:frame")
 tracks/1/interp = 1
 tracks/1/loop_wrap = true
 tracks/1/keys = {
@@ -55,7 +72,7 @@ tracks/1/keys = {
 tracks/2/type = "value"
 tracks/2/imported = false
 tracks/2/enabled = true
-tracks/2/path = NodePath("%PlayingCard:material:shader_parameter/ripple_time")
+tracks/2/path = NodePath("PlayingCard:material:shader_parameter/ripple_time")
 tracks/2/interp = 1
 tracks/2/loop_wrap = true
 tracks/2/keys = {
@@ -67,7 +84,7 @@ tracks/2/keys = {
 tracks/3/type = "value"
 tracks/3/imported = false
 tracks/3/enabled = true
-tracks/3/path = NodePath("%PlayingCard:material:shader_parameter/angle")
+tracks/3/path = NodePath("PlayingCard:material:shader_parameter/angle")
 tracks/3/interp = 1
 tracks/3/loop_wrap = true
 tracks/3/keys = {
@@ -83,7 +100,7 @@ length = 0.4
 tracks/0/type = "value"
 tracks/0/imported = false
 tracks/0/enabled = true
-tracks/0/path = NodePath("%PlayingCard:scale")
+tracks/0/path = NodePath("PlayingCard:scale")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/keys = {
@@ -95,7 +112,7 @@ tracks/0/keys = {
 tracks/1/type = "value"
 tracks/1/imported = false
 tracks/1/enabled = true
-tracks/1/path = NodePath("%PlayingCard:frame")
+tracks/1/path = NodePath("PlayingCard:frame")
 tracks/1/interp = 1
 tracks/1/loop_wrap = true
 tracks/1/keys = {
@@ -107,7 +124,7 @@ tracks/1/keys = {
 tracks/2/type = "value"
 tracks/2/imported = false
 tracks/2/enabled = true
-tracks/2/path = NodePath("%PlayingCard:material:shader_parameter/ripple_time")
+tracks/2/path = NodePath("PlayingCard:material:shader_parameter/ripple_time")
 tracks/2/interp = 1
 tracks/2/loop_wrap = true
 tracks/2/keys = {
@@ -119,7 +136,7 @@ tracks/2/keys = {
 tracks/3/type = "value"
 tracks/3/imported = false
 tracks/3/enabled = true
-tracks/3/path = NodePath("%PlayingCard:material:shader_parameter/angle")
+tracks/3/path = NodePath("PlayingCard:material:shader_parameter/angle")
 tracks/3/interp = 1
 tracks/3/loop_wrap = true
 tracks/3/keys = {
@@ -135,7 +152,7 @@ length = 0.4
 tracks/0/type = "value"
 tracks/0/imported = false
 tracks/0/enabled = true
-tracks/0/path = NodePath("%PlayingCard:scale")
+tracks/0/path = NodePath("PlayingCard:scale")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/keys = {
@@ -147,7 +164,7 @@ tracks/0/keys = {
 tracks/1/type = "value"
 tracks/1/imported = false
 tracks/1/enabled = true
-tracks/1/path = NodePath("%PlayingCard:frame")
+tracks/1/path = NodePath("PlayingCard:frame")
 tracks/1/interp = 1
 tracks/1/loop_wrap = true
 tracks/1/keys = {
@@ -159,7 +176,7 @@ tracks/1/keys = {
 tracks/2/type = "value"
 tracks/2/imported = false
 tracks/2/enabled = true
-tracks/2/path = NodePath("%PlayingCard:material:shader_parameter/ripple_time")
+tracks/2/path = NodePath("PlayingCard:material:shader_parameter/ripple_time")
 tracks/2/interp = 1
 tracks/2/loop_wrap = true
 tracks/2/keys = {
@@ -171,7 +188,7 @@ tracks/2/keys = {
 tracks/3/type = "value"
 tracks/3/imported = false
 tracks/3/enabled = true
-tracks/3/path = NodePath("%PlayingCard:material:shader_parameter/angle")
+tracks/3/path = NodePath("PlayingCard:material:shader_parameter/angle")
 tracks/3/interp = 1
 tracks/3/loop_wrap = true
 tracks/3/keys = {
@@ -188,10 +205,14 @@ _data = {
 "flip_card_back": SubResource("Animation_66c7c")
 }
 
-[node name="Node2D" type="Node2D"]
+[node name="Control" type="Control" groups=["PlayingCards"]]
+layout_mode = 3
+anchors_preset = 0
 script = ExtResource("1_ix3hf")
 
 [node name="PlayingCardContainer" type="Area2D" parent="."]
+material = SubResource("ShaderMaterial_6i68d")
+position = Vector2(70.555, 95.115)
 
 [node name="LightOccluder2D" type="LightOccluder2D" parent="PlayingCardContainer"]
 occluder = SubResource("OccluderPolygon2D_y4isa")
@@ -221,6 +242,13 @@ libraries = {
 "": SubResource("AnimationLibrary_dxx0f")
 }
 
-[connection signal="input_event" from="PlayingCardContainer" to="." method="OnInputEvent"]
-[connection signal="mouse_entered" from="PlayingCardContainer" to="." method="OnArea2DMouseEntered"]
-[connection signal="mouse_exited" from="PlayingCardContainer" to="." method="OnArea2DMouseExited"]
+[node name="CursorCapture" type="Control" parent="."]
+z_index = 4
+layout_mode = 3
+anchors_preset = 0
+offset_left = -70.0
+offset_top = -95.0
+offset_right = 70.0
+offset_bottom = 95.0
+mouse_filter = 1
+mouse_default_cursor_shape = 2

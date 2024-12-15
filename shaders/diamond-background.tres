@@ -1,0 +1,9 @@
+[gd_resource type="ShaderMaterial" load_steps=2 format=3 uid="uid://jypf0n0ht6m"]
+
+[ext_resource type="Shader" path="res://shaders/diamond-background.gdshader" id="1_wjecu"]
+
+[resource]
+shader = ExtResource("1_wjecu")
+shader_parameter/backgroundColor1 = Color(0.856608, 0.989645, 0.968487, 1)
+shader_parameter/backgroundColor2 = Color(0.0953811, 0.427144, 0.666098, 1)
+shader_parameter/rotation = 65.69
