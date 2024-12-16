@@ -11,6 +11,7 @@ public partial class Main : Node2D
 	private PackedScene packedScene = (PackedScene)ResourceLoader.Load("res://playing_card.tscn");
 
 	private int _numberOfCardsFlipped = 0;
+	List<PlayingCardContainer> _flippedCards = new List<PlayingCardContainer>();
 
 	// Called when the node enters the scene tree for the first time.
 	public override void _Ready()
@@ -58,36 +59,30 @@ public partial class Main : Node2D
 		GetNode<GridContainer>("%Cards").Show();
 	}
 
-	private async void OnCardFlipped(int rank, string suit)
+	private async void OnCardFlipped(int rank, string suit, ulong id)
 	{
 		GD.Print($"Card flipped: {rank} of {suit}");
 		_numberOfCardsFlipped++;
 
-		if (_numberOfCardsFlipped == 2)
+		PlayingCardContainer card = InstanceFromId(id) as PlayingCardContainer;
+		_flippedCards.Add(card);
+		card.allowClicks = false;
+
+		if (_flippedCards.Count >= 2)
 		{
 			_cards.MouseFilter = Control.MouseFilterEnum.Stop;
-			List<PlayingCardContainer> flippedCards = new List<PlayingCardContainer>();
-
-			foreach (PlayingCardContainer card in _cards.GetChildren())
-			{
-				if (card.cardIsFlipped)
-				{
-					flippedCards.Add(card);
-				}
-			}
-
 
 			// Check if the two flipped cards match
 			// If they match, remove them from the grid
 			// If they don't match, flip them back over
 			bool match = _gameState.CheckMatch(new Card
 			{
-				rank = flippedCards[0].rank,
-				suit = flippedCards[0].suit
+				rank = _flippedCards[0].rank,
+				suit = _flippedCards[0].suit
 			}, new Card
 			{
-				rank = flippedCards[1].rank,
-				suit = flippedCards[1].suit
+				rank = _flippedCards[1].rank,
+				suit = _flippedCards[1].suit
 			});
 
 
@@ -98,21 +93,31 @@ public partial class Main : Node2D
 
 			_numberOfCardsFlipped = 0;
 
-			foreach (PlayingCardContainer card in flippedCards)
-			{
-				card.FlipDown();
-			}
+
+
 
 			if (match)
 			{
 
-				foreach (PlayingCardContainer card in flippedCards)
+				_flippedCards.ForEach(card =>
 				{
 					card.Modulate = new Color(1, 1, 1, 0);
 					card.allowClicks = false;
 					card.MouseDefaultCursorShape = Control.CursorShape.Arrow;
-				}
+				});
 			}
+			else
+			{
+				_flippedCards.ForEach(card =>
+				{
+					card.allowClicks = true;
+					card.FlipDown();
+				});
+
+			}
+
+
+			_flippedCards.Clear();
 
 			_cards.MouseFilter = Control.MouseFilterEnum.Pass;
 			// cards.GetTree().CallGroup("PlayingCards", "FlipDown");

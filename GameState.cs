@@ -14,6 +14,7 @@ public struct Card
 {
 	public Suit suit;
 	public int rank;
+	public ulong id;
 }
 
 

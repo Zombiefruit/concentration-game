@@ -17,16 +17,24 @@ public partial class PlayingCardContainer : Control
 	public int rank;
 
 	[Signal]
-	public delegate void CardFlippedEventHandler(int rank, string suit);
+	public delegate void CardFlippedEventHandler(int rank, string suit, ulong id);
 
 	public bool cardIsFlipped = false;
 	public bool allowClicks = true;
+	public ulong id;
 	private AnimationPlayer _animationPlayer;
 	private AudioStreamPlayer2D _audioStreamPlayer;
 	private ShaderMaterial _cardMaterial;
 	private AnimatedSprite2D _cardSprite;
 	private ShaderMaterial _highlightShader = ResourceLoader.Load("res://shaders/highlight-material.tres") as ShaderMaterial;
 	private ShaderMaterial _rippleShader = ResourceLoader.Load("res://shaders/ripple-material.tres") as ShaderMaterial;
+	private AnimatedSprite2D _shadow;
+
+	#region Tweens
+	private Tween _hoverTween;
+	private Tween _rotateTween;
+	private Tween _shadowTween;
+	#endregion
 
 
 	public override void _Ready()
@@ -44,25 +52,72 @@ public partial class PlayingCardContainer : Control
 		_cardSprite.SpriteFrames = spriteFrames;
 		_cardSprite.Animation = "card_flip";
 		_cardSprite.Frame = 0;
+
+		id = GetInstanceId();
+		_shadow = GetNode<AnimatedSprite2D>("%Shadow");
+
+		// _hoverTween = GetTree().CreateTween();
+		// _rotateTween = GetTree().CreateTween();
 	}
 
 	// Called every frame. 'delta' is the elapsed time since the previous frame.
 	public override void _Process(double delta)
 	{
-
+		HandleShadow(delta);
 	}
 
 	private void OnArea2DMouseEntered()
 	{
-		// GD.Print("Mouse entered");
+		if (_hoverTween != null && _hoverTween.IsRunning())
+			_hoverTween.Kill();
+
+		_hoverTween = GetTree().CreateTween().SetEase(Tween.EaseType.Out).SetTrans(Tween.TransitionType.Elastic).SetParallel(true);
+		_hoverTween.TweenProperty(_cardSprite, "scale", new Vector2(1.05f, 1.05f), 0.5f);
+		// slightly larger shadow, to give the illusion of a card hovering
+		_hoverTween.TweenProperty(_shadow, "scale", new Vector2(1.03f, 1.03f), 0.5f);
+
+		if (_rotateTween != null && _rotateTween.IsRunning())
+			_rotateTween.Kill();
+
+		_rotateTween = GetTree().CreateTween().SetEase(Tween.EaseType.Out).SetTrans(Tween.TransitionType.Back);
+		_rotateTween.TweenProperty(this, "rotation", 0.03, 0.15f);
+		_rotateTween.TweenProperty(this, "rotation", -0.02, 0.1f);
+		_rotateTween.TweenProperty(this, "rotation", 0.00, 0.1f);
 	}
 
 	private void OnArea2DMouseExited()
 	{
-		// GD.Print("Mouse exited");
+		if (_rotateTween != null && _rotateTween.IsRunning())
+			_rotateTween.Kill();
+
+		_rotateTween = GetTree().CreateTween().SetEase(Tween.EaseType.Out).SetTrans(Tween.TransitionType.Back).SetParallel(true);
+		_rotateTween.TweenProperty(this, "rotation", 0.0f, 0.5f);
+
+		if (_hoverTween != null && _hoverTween.IsRunning())
+			_hoverTween.Kill();
+
+		_hoverTween = GetTree().CreateTween().SetEase(Tween.EaseType.Out).SetTrans(Tween.TransitionType.Elastic).SetParallel(true);
+		_hoverTween.TweenProperty(_cardSprite, "scale", Vector2.One, 0.55f);
+		_hoverTween.TweenProperty(_shadow, "scale", Vector2.One, 0.55f);
 	}
 
-	public void OnInputEvent(Viewport viewport, InputEvent @event, int shape_idx)
+	void HandleShadow(double delta)
+	{
+		// Get the center of the viewport
+		Vector2 center = GetViewportRect().Size / 2.0f;
+
+		// Calculate the distance from the center on the X-axis
+		float distance = GlobalPosition.X - center.X;
+
+		// Update the shadow's X position based on the distance
+		_shadow.Position = new Vector2(
+			Mathf.Lerp(0.0f, -Mathf.Sign(distance) * 10, Mathf.Abs(distance / center.X)),
+			_shadow.Position.Y
+		);
+	}
+
+
+	public void OnInputEvent(Viewport _viewport, InputEvent @event, int _shape_idx)
 	{
 		if (@event is InputEventMouseButton mouseEvent && allowClicks)
 		{
@@ -72,7 +127,7 @@ public partial class PlayingCardContainer : Control
 			{
 				GD.Print("Mouse button pressed");
 				ToggleCardFlip();
-				EmitSignal(SignalName.CardFlipped, rank, suit.ToString());
+				EmitSignal(SignalName.CardFlipped, rank, suit.ToString(), id);
 			}
 		}
 	}

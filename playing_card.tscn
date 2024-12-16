@@ -215,6 +215,7 @@ offset_right = -1011.0
 offset_bottom = -458.0
 grow_horizontal = 2
 grow_vertical = 2
+pivot_offset = Vector2(70, 95)
 mouse_filter = 1
 mouse_default_cursor_shape = 2
 script = ExtResource("1_ix3hf")
@@ -243,6 +244,13 @@ unique_name_in_owner = true
 material = ExtResource("5_2jir2")
 sprite_frames = SubResource("SpriteFrames_36fne")
 metadata/_edit_group_ = true
+
+[node name="Shadow" type="AnimatedSprite2D" parent="PlayingCardContainer/PlayingCard"]
+unique_name_in_owner = true
+modulate = Color(0.0862745, 0.0862745, 0.0862745, 0.364706)
+z_index = -1
+position = Vector2(0.5, 7.075)
+sprite_frames = SubResource("SpriteFrames_36fne")
 
 [node name="CardAnimationPlayer" type="AnimationPlayer" parent="."]
 unique_name_in_owner = true
