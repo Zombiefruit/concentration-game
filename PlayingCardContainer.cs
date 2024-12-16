@@ -23,7 +23,8 @@ public partial class PlayingCardContainer : Control
 	public bool allowClicks = true;
 	public ulong id;
 	private AnimationPlayer _animationPlayer;
-	private AudioStreamPlayer2D _audioStreamPlayer;
+	private AudioStreamPlayer2D _cardFlipSoundPlayer;
+	private AudioStreamPlayer2D _cardHoverSoundPlayer;
 	private ShaderMaterial _cardMaterial;
 	private AnimatedSprite2D _cardSprite;
 	private ShaderMaterial _highlightShader = ResourceLoader.Load("res://shaders/highlight-material.tres") as ShaderMaterial;
@@ -40,7 +41,8 @@ public partial class PlayingCardContainer : Control
 	public override void _Ready()
 	{
 		_animationPlayer = GetNode<AnimationPlayer>("%CardAnimationPlayer");
-		_audioStreamPlayer = GetNode<AudioStreamPlayer2D>("%CardFlipSound");
+		_cardFlipSoundPlayer = GetNode<AudioStreamPlayer2D>("%CardFlipSound");
+		_cardHoverSoundPlayer = GetNode<AudioStreamPlayer2D>("%HoverSound");
 
 		_cardMaterial = GetNode<CollisionShape2D>("%CardCollisionShape").Material as ShaderMaterial;
 		_cardSprite = GetNode<AnimatedSprite2D>("%PlayingCard");
@@ -55,21 +57,23 @@ public partial class PlayingCardContainer : Control
 
 		id = GetInstanceId();
 		_shadow = GetNode<AnimatedSprite2D>("%Shadow");
-
-		// _hoverTween = GetTree().CreateTween();
-		// _rotateTween = GetTree().CreateTween();
 	}
 
-	// Called every frame. 'delta' is the elapsed time since the previous frame.
 	public override void _Process(double delta)
 	{
-		HandleShadow(delta);
+		HandleShadow();
 	}
 
 	private void OnArea2DMouseEntered()
 	{
 		if (_hoverTween != null && _hoverTween.IsRunning())
 			_hoverTween.Kill();
+
+		if (_cardHoverSoundPlayer.Playing)
+			_cardHoverSoundPlayer.Stop();
+
+		_cardHoverSoundPlayer.Play();
+
 
 		_hoverTween = GetTree().CreateTween().SetEase(Tween.EaseType.Out).SetTrans(Tween.TransitionType.Elastic).SetParallel(true);
 		_hoverTween.TweenProperty(_cardSprite, "scale", new Vector2(1.05f, 1.05f), 0.5f);
@@ -101,15 +105,13 @@ public partial class PlayingCardContainer : Control
 		_hoverTween.TweenProperty(_shadow, "scale", Vector2.One, 0.55f);
 	}
 
-	void HandleShadow(double delta)
+	void HandleShadow()
 	{
-		// Get the center of the viewport
 		Vector2 center = GetViewportRect().Size / 2.0f;
 
-		// Calculate the distance from the center on the X-axis
 		float distance = GlobalPosition.X - center.X;
 
-		// Update the shadow's X position based on the distance
+		// Update the shadow's X position based on the distance to give some depth effect - copied from Balatro Godot tutorial
 		_shadow.Position = new Vector2(
 			Mathf.Lerp(0.0f, -Mathf.Sign(distance) * 10, Mathf.Abs(distance / center.X)),
 			_shadow.Position.Y
@@ -134,14 +136,14 @@ public partial class PlayingCardContainer : Control
 
 	public void FlipUp()
 	{
-		_audioStreamPlayer.Play();
+		_cardFlipSoundPlayer.Play();
 		cardIsFlipped = true;
 		_animationPlayer.Play("flip_card");
 	}
 
 	public void FlipDown()
 	{
-		_audioStreamPlayer.Play();
+		_cardFlipSoundPlayer.Play();
 		cardIsFlipped = false;
 		_animationPlayer.Play("flip_card_back");
 	}

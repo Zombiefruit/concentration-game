@@ -85,20 +85,12 @@ public partial class Main : Node2D
 				suit = _flippedCards[1].suit
 			});
 
-
-
-			// wait for two seconds
 			await ToSignal(GetTree().CreateTimer(0.5f), SceneTreeTimer.SignalName.Timeout);
-
 
 			_numberOfCardsFlipped = 0;
 
-
-
-
 			if (match)
 			{
-
 				_flippedCards.ForEach(card =>
 				{
 					card.Modulate = new Color(1, 1, 1, 0);
@@ -113,18 +105,10 @@ public partial class Main : Node2D
 					card.allowClicks = true;
 					card.FlipDown();
 				});
-
 			}
 
-
 			_flippedCards.Clear();
-
 			_cards.MouseFilter = Control.MouseFilterEnum.Pass;
-			// cards.GetTree().CallGroup("PlayingCards", "FlipDown");
-
-
-			// GetTree().CallGroup("PlayingCards", "FlipDown");
-
 		}
 	}
 }

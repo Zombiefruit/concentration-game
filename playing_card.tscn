@@ -1,7 +1,8 @@
-[gd_scene load_steps=15 format=3 uid="uid://cse8ho51ny328"]
+[gd_scene load_steps=16 format=3 uid="uid://cse8ho51ny328"]
 
 [ext_resource type="Script" path="res://PlayingCardContainer.cs" id="1_ix3hf"]
 [ext_resource type="Shader" path="res://test.gdshader" id="2_cx7mv"]
+[ext_resource type="AudioStream" uid="uid://bfhvobipwh5ae" path="res://assets/Boardgame Pack/Bonus/cardSlide3.ogg" id="3_oso10"]
 [ext_resource type="AudioStream" uid="uid://cuuj3sc634l63" path="res://assets/Boardgame Pack/Bonus/cardPlace1.ogg" id="4_d0g4c"]
 [ext_resource type="Material" uid="uid://08c64hj26nco" path="res://shaders/ripple-material.tres" id="5_2jir2"]
 [ext_resource type="Texture2D" uid="uid://7iwuudhufo18" path="res://assets/Boardgame Pack/PNG/Cards/cardBack_blue2.png" id="6_mj15s"]
@@ -226,6 +227,11 @@ position = Vector2(70.555, 95.115)
 
 [node name="LightOccluder2D" type="LightOccluder2D" parent="PlayingCardContainer"]
 occluder = SubResource("OccluderPolygon2D_y4isa")
+
+[node name="HoverSound" type="AudioStreamPlayer2D" parent="PlayingCardContainer"]
+unique_name_in_owner = true
+stream = ExtResource("3_oso10")
+pitch_scale = 2.29
 
 [node name="CardFlipSound" type="AudioStreamPlayer2D" parent="PlayingCardContainer"]
 unique_name_in_owner = true
