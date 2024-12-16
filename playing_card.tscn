@@ -1,4 +1,4 @@
-[gd_scene load_steps=16 format=3 uid="uid://cse8ho51ny328"]
+[gd_scene load_steps=20 format=3 uid="uid://cse8ho51ny328"]
 
 [ext_resource type="Script" path="res://PlayingCardContainer.cs" id="1_ix3hf"]
 [ext_resource type="Shader" path="res://test.gdshader" id="2_cx7mv"]
@@ -7,6 +7,7 @@
 [ext_resource type="Material" uid="uid://08c64hj26nco" path="res://shaders/ripple-material.tres" id="5_2jir2"]
 [ext_resource type="Texture2D" uid="uid://7iwuudhufo18" path="res://assets/Boardgame Pack/PNG/Cards/cardBack_blue2.png" id="6_mj15s"]
 [ext_resource type="Texture2D" uid="uid://bcudpxr0ogmn8" path="res://assets/Boardgame Pack/PNG/Cards/cardClubs2.png" id="7_3j62i"]
+[ext_resource type="Shader" path="res://burn-up.gdshader" id="8_mo7v7"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_6i68d"]
 shader = ExtResource("2_cx7mv")
@@ -17,7 +18,7 @@ shader_parameter/polar_repeat = 1.0
 shader_parameter/spin_rotation = null
 shader_parameter/spin_speed = 1.0
 shader_parameter/offset = Vector2(0, 0)
-shader_parameter/colour_1 = null
+shader_parameter/colour_1 = Color(0, 0, 0.690196, 1)
 shader_parameter/colour_2 = null
 shader_parameter/colour_3 = null
 shader_parameter/contrast = 2.0
@@ -43,6 +44,23 @@ animations = [{
 "name": &"default",
 "speed": 5.0
 }]
+
+[sub_resource type="FastNoiseLite" id="FastNoiseLite_g6814"]
+noise_type = 3
+
+[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_rv1nd"]
+width = 256
+height = 256
+seamless = true
+normalize = false
+noise = SubResource("FastNoiseLite_g6814")
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_f05bu"]
+shader = ExtResource("8_mo7v7")
+shader_parameter/dissolve_value = 0.574
+shader_parameter/burn_size = 0.06
+shader_parameter/burn_color = Color(0.635536, 0.42613, 0.105473, 1)
+shader_parameter/dissolve_texture = SubResource("NoiseTexture2D_rv1nd")
 
 [sub_resource type="Animation" id="Animation_mm1by"]
 length = 0.4
@@ -257,6 +275,11 @@ modulate = Color(0.0862745, 0.0862745, 0.0862745, 0.364706)
 z_index = -1
 position = Vector2(0.5, 7.075)
 sprite_frames = SubResource("SpriteFrames_36fne")
+
+[node name="Sprite2D" type="Sprite2D" parent="PlayingCardContainer"]
+material = SubResource("ShaderMaterial_f05bu")
+position = Vector2(0.991875, -0.114998)
+scale = Vector2(-59.8311, 31)
 
 [node name="CardAnimationPlayer" type="AnimationPlayer" parent="."]
 unique_name_in_owner = true
