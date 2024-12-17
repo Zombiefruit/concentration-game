@@ -1,0 +1,283 @@
+[gd_scene load_steps=11 format=3 uid="uid://cmra3pkww1i4j"]
+
+[ext_resource type="Script" path="res://GameLayerContainer.cs" id="1_0y7y4"]
+[ext_resource type="Script" path="res://CountdownTimerContainer.cs" id="1_yay2v"]
+[ext_resource type="Theme" uid="uid://bcopu2osb4hrq" path="res://theme.tres" id="2_0t3eb"]
+[ext_resource type="AudioStream" uid="uid://1y45t35tmcov" path="res://assets/sounds/countdown.wav" id="3_1qlxm"]
+[ext_resource type="Shader" path="res://glitch.gdshader" id="5_mig46"]
+
+[sub_resource type="Animation" id="Animation_3fmdn"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("%GameOverText:modulate")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Color(1, 1, 1, 0)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("WinnerText:modulate")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Color(1, 1, 1, 0)]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("RetryButtonContainer:modulate")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Color(1, 1, 1, 0)]
+}
+
+[sub_resource type="Animation" id="Animation_tmjec"]
+resource_name = "game_over_fade_in"
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("%GameOverText:modulate")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 1),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Color(1, 1, 1, 0), Color(1, 1, 1, 1)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("RetryButtonContainer:modulate")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 1),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Color(1, 1, 1, 0), Color(1, 1, 1, 1)]
+}
+
+[sub_resource type="Animation" id="Animation_hxnq1"]
+resource_name = "winner_fade_in"
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("WinnerText:modulate")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(-0.0333333, 0.966667),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Color(1, 1, 1, 0), Color(1, 1, 1, 1)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("RetryButtonContainer:modulate")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(-0.0333333, 0.966667),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Color(1, 1, 1, 0), Color(1, 1, 1, 1)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_gxl5c"]
+_data = {
+"RESET": SubResource("Animation_3fmdn"),
+"game_over_fade_in": SubResource("Animation_tmjec"),
+"winner_fade_in": SubResource("Animation_hxnq1")
+}
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_yhjot"]
+shader = ExtResource("5_mig46")
+shader_parameter/shake_power = 0.005
+shader_parameter/shake_rate = 0.2
+shader_parameter/shake_speed = 5.0
+shader_parameter/shake_block_size = 30.5
+shader_parameter/shake_color_rate = 0.002
+
+[node name="GameLayerContainer" type="CanvasLayer"]
+script = ExtResource("1_0y7y4")
+
+[node name="Cards" type="GridContainer" parent="."]
+unique_name_in_owner = true
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 6
+size_flags_vertical = 6
+mouse_filter = 2
+theme_override_constants/h_separation = 20
+theme_override_constants/v_separation = 20
+columns = 7
+
+[node name="VBoxContainer" type="VBoxContainer" parent="."]
+anchors_preset = -1
+anchor_left = 0.575
+anchor_right = 0.605
+offset_left = -240.5
+offset_right = 240.5
+offset_bottom = 183.0
+grow_horizontal = 2
+alignment = 1
+
+[node name="CountdownTimerContainer" type="HBoxContainer" parent="VBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 0
+size_flags_vertical = 6
+script = ExtResource("1_yay2v")
+
+[node name="Seconds" type="Label" parent="VBoxContainer/CountdownTimerContainer"]
+custom_minimum_size = Vector2(136.685, 0)
+layout_mode = 2
+theme = ExtResource("2_0t3eb")
+theme_override_font_sizes/font_size = 81
+text = "00"
+horizontal_alignment = 2
+
+[node name="Colon" type="Label" parent="VBoxContainer/CountdownTimerContainer"]
+layout_mode = 2
+theme = ExtResource("2_0t3eb")
+theme_override_font_sizes/font_size = 81
+text = ":"
+
+[node name="MilliSeconds" type="Label" parent="VBoxContainer/CountdownTimerContainer"]
+custom_minimum_size = Vector2(136.685, 0)
+layout_mode = 2
+theme = ExtResource("2_0t3eb")
+theme_override_font_sizes/font_size = 81
+text = "00"
+horizontal_alignment = 1
+
+[node name="CountdownSound" type="AudioStreamPlayer2D" parent="VBoxContainer/CountdownTimerContainer"]
+unique_name_in_owner = true
+stream = ExtResource("3_1qlxm")
+volume_db = 4.771
+pitch_scale = 0.38
+
+[node name="GameOverText" type="RichTextLabel" parent="."]
+unique_name_in_owner = true
+visible = false
+modulate = Color(1, 1, 1, 0)
+custom_minimum_size = Vector2(1000, 0)
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -0.5
+offset_top = -76.5
+offset_right = 0.5
+offset_bottom = 76.5
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+mouse_filter = 2
+theme = ExtResource("2_0t3eb")
+theme_override_font_sizes/normal_font_size = 120
+bbcode_enabled = true
+text = "[wave amp=50.0 freq=5.0 connected=1][center]Time's Up![/center][/wave]"
+
+[node name="TextAnimator" type="AnimationPlayer" parent="."]
+unique_name_in_owner = true
+libraries = {
+"": SubResource("AnimationLibrary_gxl5c")
+}
+
+[node name="WinnerText" type="RichTextLabel" parent="."]
+unique_name_in_owner = true
+visible = false
+modulate = Color(1, 1, 1, 0)
+custom_minimum_size = Vector2(1000, 0)
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -500.0
+offset_top = -76.5
+offset_right = 500.0
+offset_bottom = 76.5
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+mouse_filter = 2
+theme = ExtResource("2_0t3eb")
+theme_override_font_sizes/normal_font_size = 120
+bbcode_enabled = true
+text = "[shake rate=10 level=5 connected=1][rainbow freq=1.0 sat=0.4 val=0.8][center]You win![/center][/rainbow][/shake]"
+
+[node name="RetryButtonContainer" type="Control" parent="."]
+unique_name_in_owner = true
+visible = false
+modulate = Color(1, 1, 1, 0)
+layout_mode = 3
+anchors_preset = 12
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_top = -114.0
+grow_horizontal = 2
+grow_vertical = 0
+
+[node name="RetryButton" type="Button" parent="RetryButtonContainer"]
+unique_name_in_owner = true
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -92.5
+offset_top = -33.0
+offset_right = 92.5
+offset_bottom = 33.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_default_cursor_shape = 2
+theme = ExtResource("2_0t3eb")
+theme_override_font_sizes/font_size = 31
+text = "Retry?"
+
+[node name="ColorRect" type="ColorRect" parent="RetryButtonContainer"]
+material = SubResource("ShaderMaterial_yhjot")
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -116.0
+offset_top = -33.0
+offset_right = 116.0
+offset_bottom = 33.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+
+[connection signal="pressed" from="RetryButtonContainer/RetryButton" to="." method="OnRetryButtonPressed"]

@@ -23,25 +23,48 @@ public partial class GameState : Node
 	[Export(PropertyHint.Range, "2, 20, 2")]
 	public int deckSize = 14;
 
+	[Signal]
+	public delegate void RoundWonEventHandler();
+
+	[Signal]
+	public delegate void ScoreUpdatedEventHandler(int newScore);
+
 	private int _numberOfCardsFlipped = 0;
 	private int _numberOfCardsMatched = 0;
 	private int _gameTimeLimitInSeconds = 30;
+
+	private bool _roundOver;
 
 	private Card[] _deck;
 	// Called when the node enters the scene tree for the first time.
 	public override void _Ready()
 	{
 		GenerateDeck();
+		_roundOver = false;
 	}
 
 	// Called every frame. 'delta' is the elapsed time since the previous frame.
 	public override void _Process(double delta)
 	{
+		if (_numberOfCardsMatched == deckSize && !_roundOver)
+		{
+			GD.Print("Round over!");
+			EmitSignal(SignalName.RoundWon);
+			_roundOver = true;
+		}
 	}
 
 	public int GetGameTimeLimit()
 	{
 		return _gameTimeLimitInSeconds;
+	}
+
+	public void Reset()
+	{
+		_numberOfCardsMatched = 0;
+		_numberOfCardsFlipped = 0;
+		_roundOver = false;
+		GenerateDeck();
 	}
 
 	public bool CheckMatch(Card card1, Card card2)
@@ -51,6 +74,7 @@ public partial class GameState : Node
 			GD.Print("Match!");
 			_numberOfCardsMatched += 2;
 
+			EmitSignal(SignalName.ScoreUpdated, _numberOfCardsMatched);
 			return true;
 		}
 		else
@@ -62,7 +86,6 @@ public partial class GameState : Node
 
 	private void GenerateDeck()
 	{
-
 		// Create a RandomNumberGenerator instance
 		RandomNumberGenerator rng = new RandomNumberGenerator();
 		rng.Randomize();

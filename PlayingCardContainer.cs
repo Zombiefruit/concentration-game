@@ -60,6 +60,7 @@ public partial class PlayingCardContainer : Control
 
 		id = GetInstanceId();
 		_shadow = GetNode<AnimatedSprite2D>("%Shadow");
+		_animationPlayer.Play("breathing", GD.Randf());
 	}
 
 	public override void _Process(double delta)
@@ -104,18 +105,29 @@ public partial class PlayingCardContainer : Control
 
 	private void OnArea2DMouseEntered()
 	{
-		if (_cardHoverSoundPlayer.Playing)
-			_cardHoverSoundPlayer.Stop();
 
-		_cardHoverSoundPlayer.PitchScale = (float)GD.RandRange(0.95, 1.3);
-		_cardHoverSoundPlayer.Play();
+		if (allowClicks)
+		{
+			if (_cardHoverSoundPlayer.Playing)
+				_cardHoverSoundPlayer.Stop();
 
-		AnimateShakeIn();
+			if (_animationPlayer.CurrentAnimation == "breathing" && _animationPlayer.IsPlaying())
+				_animationPlayer.Stop();
+
+			_cardHoverSoundPlayer.PitchScale = (float)GD.RandRange(0.95, 1.3);
+			_cardHoverSoundPlayer.Play();
+
+			AnimateShakeIn();
+		}
 	}
 
 	private void OnArea2DMouseExited()
 	{
-		AnimateShakeOut();
+
+		if (allowClicks)
+		{
+			AnimateShakeOut();
+		}
 	}
 
 	private void HandleShadow()
@@ -131,10 +143,15 @@ public partial class PlayingCardContainer : Control
 		);
 	}
 
-	public void BurnCard()
+	public void StopInteractivity()
 	{
 		MouseDefaultCursorShape = CursorShape.Arrow;
 		allowClicks = false;
+	}
+
+	public void BurnCard()
+	{
+		StopInteractivity();
 		_burnSoundPlayer.PitchScale = (float)GD.RandRange(0.95, 1.3);
 		_burnSoundPlayer.Play();
 		_cardSprite.UseParentMaterial = true;
@@ -152,11 +169,8 @@ public partial class PlayingCardContainer : Control
 	{
 		if (@event is InputEventMouseButton mouseEvent && allowClicks)
 		{
-			GD.Print("mouse button event at ", mouseEvent.Position);
-
 			if (mouseEvent.ButtonIndex == MouseButton.Left && mouseEvent.Pressed)
 			{
-				GD.Print("Mouse button pressed");
 				ToggleCardFlip();
 				EmitSignal(SignalName.CardFlipped, rank, suit.ToString(), id);
 			}
@@ -183,12 +197,10 @@ public partial class PlayingCardContainer : Control
 	{
 		if (!cardIsFlipped)
 		{
-			GD.Print("Flipping card, since it is not flipped");
 			FlipUp();
 		}
 		else
 		{
-			GD.Print("Flipping card back, since it is flipped");
 			FlipDown();
 		}
 	}

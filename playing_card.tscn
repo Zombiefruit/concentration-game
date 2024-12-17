@@ -1,4 +1,4 @@
-[gd_scene load_steps=18 format=3 uid="uid://cse8ho51ny328"]
+[gd_scene load_steps=19 format=3 uid="uid://cse8ho51ny328"]
 
 [ext_resource type="Script" path="res://PlayingCardContainer.cs" id="1_ix3hf"]
 [ext_resource type="Texture2D" uid="uid://kgj8q6ichwlt" path="res://shaders/dissolve-texture.tres" id="2_2e4u7"]
@@ -94,6 +94,18 @@ tracks/3/keys = {
 "transitions": PackedFloat32Array(1),
 "update": 0,
 "values": [45.0]
+}
+tracks/4/type = "value"
+tracks/4/imported = false
+tracks/4/enabled = true
+tracks/4/path = NodePath("%PlayingCard:scale")
+tracks/4/interp = 1
+tracks/4/loop_wrap = true
+tracks/4/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(1, 1)]
 }
 
 [sub_resource type="Animation" id="Animation_lvenx"]
@@ -200,9 +212,39 @@ tracks/3/keys = {
 "values": [135.0]
 }
 
+[sub_resource type="Animation" id="Animation_qly85"]
+resource_name = "breathing"
+length = 2.0
+loop_mode = 1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("%PlayingCard:scale")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 1),
+"transitions": PackedFloat32Array(1, 0.420448),
+"update": 0,
+"values": [Vector2(1, 1), Vector2(1.008, 1.008)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("%Shadow:scale")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 1),
+"transitions": PackedFloat32Array(1, 0.420448),
+"update": 0,
+"values": [Vector2(1, 1), Vector2(1.01, 1.01)]
+}
+
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_dxx0f"]
 _data = {
 "RESET": SubResource("Animation_mm1by"),
+"breathing": SubResource("Animation_qly85"),
 "flip_card": SubResource("Animation_lvenx"),
 "flip_card_back": SubResource("Animation_66c7c")
 }
@@ -214,8 +256,8 @@ layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
-offset_right = -1011.0
-offset_bottom = -458.0
+offset_right = -1139.0
+offset_bottom = -530.0
 grow_horizontal = 2
 grow_vertical = 2
 pivot_offset = Vector2(70, 95)
@@ -270,6 +312,7 @@ root_node = NodePath("../PlayingCardContainer")
 libraries = {
 "": SubResource("AnimationLibrary_dxx0f")
 }
+autoplay = "breathing"
 
 [node name="CursorCapture" type="Control" parent="."]
 z_index = 4

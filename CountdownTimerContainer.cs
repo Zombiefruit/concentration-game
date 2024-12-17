@@ -45,7 +45,24 @@ public partial class CountdownTimerContainer : HBoxContainer
 		this.timeLimitInSeconds = timeLimitInSeconds;
 		remainingTime = timeLimitInSeconds;
 
+		_seconds.AddThemeColorOverride("font_color", new Color("#FFF"));
+		_milliSeconds.AddThemeColorOverride("font_color", new Color("#FFF"));
+		_colon.AddThemeColorOverride("font_color", new Color("#FFF"));
+
 		_isRunning = true;
+	}
+
+	public void Stop()
+	{
+		_isRunning = false;
+		_countdownSoundPlayer.Stop();
+	}
+
+	public void Reset()
+	{
+		remainingTime = timeLimitInSeconds;
+		_isRunning = false;
+		UpdateCountdownText();
 	}
 
 
@@ -108,14 +125,12 @@ public partial class CountdownTimerContainer : HBoxContainer
 
 		if (_frameCounter % 5 == 0)
 		{
-			GD.Print("resetting text");
 			_seconds.Position = _originalSecondsPosition;
 			_milliSeconds.Position = _originalMilliSecondsPosition;
 			_colon.Position = _originalColonPosition;
 		}
 		else
 		{
-			GD.Print("shaking text");
 			_seconds.Position += new Vector2(0, GD.RandRange(-1, 1) * strength);
 			_milliSeconds.Position += new Vector2(0, GD.RandRange(-1, 1) * strength);
 			_colon.Position += new Vector2(0, GD.RandRange(-1, 1) * strength);
