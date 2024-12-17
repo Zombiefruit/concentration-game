@@ -26,7 +26,9 @@ shader_parameter/roll_speed = 1.0
 shader_parameter/scan_line_strength = -8.0
 shader_parameter/pixel_strength = -2.0
 
-[node name="Main" type="Node2D"]
+[node name="Main" type="Control"]
+layout_mode = 3
+anchors_preset = 0
 script = ExtResource("1_qqgg0")
 
 [node name="Background" type="CanvasLayer" parent="."]
@@ -65,6 +67,7 @@ theme = ExtResource("10_iyb1s")
 text = "Concentrate"
 
 [node name="GameState" type="Node" parent="."]
+unique_name_in_owner = true
 script = ExtResource("13_ffywe")
 
 [node name="GameLayerContainer" parent="." instance=ExtResource("5_1mcfy")]

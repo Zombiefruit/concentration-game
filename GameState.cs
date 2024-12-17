@@ -31,7 +31,7 @@ public partial class GameState : Node
 
 	private int _numberOfCardsFlipped = 0;
 	private int _numberOfCardsMatched = 0;
-	private int _gameTimeLimitInSeconds = 30;
+	private int _gameTimeLimitInSeconds = 25;
 
 	private bool _roundOver;
 

@@ -6,7 +6,7 @@ using System.Runtime.CompilerServices;
 using System.Threading;
 using System.Threading.Tasks;
 
-public partial class Main : Node2D
+public partial class Main : Control
 {
 	private GridContainer _cards;
 	private GameLayerContainer _gameLayerContainer;
@@ -27,7 +27,7 @@ public partial class Main : Node2D
 		_gameLayerContainer = GetNode<GameLayerContainer>("%GameLayerContainer");
 		_gameLayerContainer.Hide();
 		_cards = GetNode<GridContainer>("%GameLayerContainer/%Cards");
-		_gameState = GetNode<GameState>("GameState");
+		_gameState = GetNode<GameState>("%GameState");
 
 		_gameLayerContainer.Connect("Retry", new Callable(this, nameof(ResetGame)));
 
