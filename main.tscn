@@ -1,9 +1,8 @@
-[gd_scene load_steps=10 format=3 uid="uid://bfnb5ugrj8rmk"]
+[gd_scene load_steps=9 format=3 uid="uid://bfnb5ugrj8rmk"]
 
 [ext_resource type="Script" path="res://Main.cs" id="1_qqgg0"]
 [ext_resource type="Material" uid="uid://jypf0n0ht6m" path="res://shaders/diamond-background.tres" id="1_wtv5y"]
 [ext_resource type="Shader" path="res://shaders/crt.gdshader" id="5_eujha"]
-[ext_resource type="Script" path="res://CountdownTimer.cs" id="5_tda7k"]
 [ext_resource type="AudioStream" uid="uid://hrqtdrmtyqkh" path="res://assets/music/synthwave-laser-drift-251660.mp3" id="6_7hlly"]
 [ext_resource type="Script" path="res://CountdownTimerContainer.cs" id="6_egulf"]
 [ext_resource type="Theme" uid="uid://bcopu2osb4hrq" path="res://theme.tres" id="10_iyb1s"]
@@ -69,6 +68,7 @@ script = ExtResource("13_ffywe")
 
 [node name="GameLayerContainer" type="CanvasLayer" parent="."]
 unique_name_in_owner = true
+visible = false
 
 [node name="Cards" type="GridContainer" parent="GameLayerContainer"]
 unique_name_in_owner = true
@@ -95,19 +95,6 @@ offset_right = 240.5
 offset_bottom = 183.0
 grow_horizontal = 2
 alignment = 1
-
-[node name="CountdownTimer" type="RichTextLabel" parent="GameLayerContainer/VBoxContainer"]
-unique_name_in_owner = true
-visible = false
-custom_minimum_size = Vector2(500, 100)
-layout_mode = 2
-size_flags_horizontal = 4
-size_flags_vertical = 6
-theme = ExtResource("10_iyb1s")
-theme_override_font_sizes/normal_font_size = 81
-bbcode_enabled = true
-text = "test"
-script = ExtResource("5_tda7k")
 
 [node name="CountdownTimerContainer" type="HBoxContainer" parent="GameLayerContainer/VBoxContainer"]
 unique_name_in_owner = true
