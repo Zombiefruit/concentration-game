@@ -175,8 +175,7 @@ horizontal_alignment = 1
 [node name="CountdownSound" type="AudioStreamPlayer2D" parent="VBoxContainer/CountdownTimerContainer"]
 unique_name_in_owner = true
 stream = ExtResource("3_1qlxm")
-volume_db = 4.771
-pitch_scale = 0.38
+volume_db = 1.909
 
 [node name="GameOverText" type="RichTextLabel" parent="."]
 unique_name_in_owner = true

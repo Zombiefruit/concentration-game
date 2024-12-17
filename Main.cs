@@ -18,6 +18,7 @@ public partial class Main : Control
 	private bool _beginRound = false;
 
 	private float _shuffleInTimeout = 0.35f;
+	private AudioStreamPlayer2D _playButtonSound;
 	List<PlayingCardContainer> _flippedCards = new List<PlayingCardContainer>();
 
 	// Called when the node enters the scene tree for the first time.
@@ -25,6 +26,7 @@ public partial class Main : Control
 	{
 		GD.Randomize();
 		_gameLayerContainer = GetNode<GameLayerContainer>("%GameLayerContainer");
+		_playButtonSound = GetNode<AudioStreamPlayer2D>("%PlayButtonSound");
 		_gameLayerContainer.Hide();
 		_cards = GetNode<GridContainer>("%GameLayerContainer/%Cards");
 		_gameState = GetNode<GameState>("%GameState");
@@ -45,6 +47,8 @@ public partial class Main : Control
 	public async void OnPlayButtonPressed()
 	{
 		InitDeck();
+		_playButtonSound.PitchScale = 0.5f;
+		_playButtonSound.Play(0.5f);
 		GetNode<Button>("%PlayButton").Hide();
 		_gameLayerContainer.Show();
 		int gameTimeLimit = _gameState.GetGameTimeLimit();
@@ -52,6 +56,12 @@ public partial class Main : Control
 		await ToSignal(GetTree().CreateTimer(_shuffleInTimeout), SceneTreeTimer.SignalName.Timeout);
 
 		_countdownTimerContainer.Start(gameTimeLimit);
+	}
+
+	public void OnPlayButtonMouseEntered()
+	{
+		_playButtonSound.PitchScale = 1.0f;
+		_playButtonSound.Play(0.8f);
 	}
 
 	private void InitDeck()

@@ -1,4 +1,4 @@
-[gd_scene load_steps=10 format=3 uid="uid://bfnb5ugrj8rmk"]
+[gd_scene load_steps=11 format=3 uid="uid://bfnb5ugrj8rmk"]
 
 [ext_resource type="Script" path="res://Main.cs" id="1_qqgg0"]
 [ext_resource type="Material" uid="uid://jypf0n0ht6m" path="res://shaders/diamond-background.tres" id="1_wtv5y"]
@@ -6,6 +6,7 @@
 [ext_resource type="Shader" path="res://shaders/crt.gdshader" id="5_eujha"]
 [ext_resource type="AudioStream" uid="uid://hrqtdrmtyqkh" path="res://assets/music/synthwave-laser-drift-251660.mp3" id="6_7hlly"]
 [ext_resource type="AudioStream" uid="uid://b2jug3ls4u48i" path="res://assets/sounds/765639__chrisgrundlingh__shuffling-cards.wav" id="8_085kk"]
+[ext_resource type="AudioStream" uid="uid://d2y46ivonvj8j" path="res://assets/Boardgame Pack/Bonus/chipsCollide1.ogg" id="9_yy1vq"]
 [ext_resource type="Theme" uid="uid://bcopu2osb4hrq" path="res://theme.tres" id="10_iyb1s"]
 [ext_resource type="Script" path="res://GameState.cs" id="13_ffywe"]
 
@@ -95,4 +96,9 @@ volume_db = 12.403
 pitch_scale = 4.0
 attenuation = 0.378929
 
+[node name="PlayButtonSound" type="AudioStreamPlayer2D" parent="."]
+unique_name_in_owner = true
+stream = ExtResource("9_yy1vq")
+
+[connection signal="mouse_entered" from="UI/VBoxContainer/PlayButton" to="." method="OnPlayButtonMouseEntered"]
 [connection signal="pressed" from="UI/VBoxContainer/PlayButton" to="." method="OnPlayButtonPressed"]
