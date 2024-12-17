@@ -1,9 +1,27 @@
-[gd_scene load_steps=5 format=3 uid="uid://bfnb5ugrj8rmk"]
+[gd_scene load_steps=7 format=3 uid="uid://bfnb5ugrj8rmk"]
 
 [ext_resource type="Script" path="res://Main.cs" id="1_qqgg0"]
 [ext_resource type="Material" uid="uid://jypf0n0ht6m" path="res://shaders/diamond-background.tres" id="1_wtv5y"]
+[ext_resource type="Shader" path="res://shaders/crt.gdshader" id="5_eujha"]
 [ext_resource type="Theme" uid="uid://bcopu2osb4hrq" path="res://theme.tres" id="10_iyb1s"]
 [ext_resource type="Script" path="res://GameState.cs" id="13_ffywe"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_m5xdf"]
+shader = ExtResource("5_eujha")
+shader_parameter/resolution = Vector2(1024, 768)
+shader_parameter/scan_line_amount = 0.207
+shader_parameter/warp_amount = 0.043
+shader_parameter/noise_amount = 0.03
+shader_parameter/interference_amount = 0.2
+shader_parameter/grille_amount = 0.1
+shader_parameter/grille_size = 1.0
+shader_parameter/vignette_amount = 0.324
+shader_parameter/vignette_intensity = 0.4
+shader_parameter/aberation_amount = 0.5
+shader_parameter/roll_line_amount = 0.0
+shader_parameter/roll_speed = 1.0
+shader_parameter/scan_line_strength = -8.0
+shader_parameter/pixel_strength = -2.0
 
 [node name="Main" type="Node2D"]
 script = ExtResource("1_qqgg0")
@@ -64,5 +82,16 @@ mouse_filter = 2
 theme_override_constants/h_separation = 20
 theme_override_constants/v_separation = 20
 columns = 7
+
+[node name="CrtContainer" type="CanvasLayer" parent="."]
+
+[node name="CRT" type="ColorRect" parent="CrtContainer"]
+material = SubResource("ShaderMaterial_m5xdf")
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
 
 [connection signal="pressed" from="UI/VBoxContainer/PlayButton" to="." method="OnPlayButtonPressed"]

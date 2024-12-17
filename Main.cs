@@ -91,11 +91,14 @@ public partial class Main : Node2D
 
 			if (match)
 			{
-				_flippedCards.ForEach(card =>
+				_flippedCards.ForEach(async card =>
 				{
-					card.Modulate = new Color(1, 1, 1, 0);
 					card.allowClicks = false;
 					card.MouseDefaultCursorShape = Control.CursorShape.Arrow;
+					card.AnimateShakeIn();
+					card.BurnCard();
+					await ToSignal(GetTree().CreateTimer(0.8f), SceneTreeTimer.SignalName.Timeout);
+					card.Modulate = new Color(1, 1, 1, 0);
 				});
 			}
 			else

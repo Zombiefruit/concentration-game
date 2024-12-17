@@ -25,6 +25,7 @@ public partial class PlayingCardContainer : Control
 	private AnimationPlayer _animationPlayer;
 	private AudioStreamPlayer2D _cardFlipSoundPlayer;
 	private AudioStreamPlayer2D _cardHoverSoundPlayer;
+	private AudioStreamPlayer2D _burnSoundPlayer;
 	private ShaderMaterial _cardMaterial;
 	private AnimatedSprite2D _cardSprite;
 	private ShaderMaterial _highlightShader = ResourceLoader.Load("res://shaders/highlight-material.tres") as ShaderMaterial;
@@ -35,6 +36,7 @@ public partial class PlayingCardContainer : Control
 	private Tween _hoverTween;
 	private Tween _rotateTween;
 	private Tween _shadowTween;
+	private Tween _destroyTween;
 	#endregion
 
 
@@ -43,6 +45,7 @@ public partial class PlayingCardContainer : Control
 		_animationPlayer = GetNode<AnimationPlayer>("%CardAnimationPlayer");
 		_cardFlipSoundPlayer = GetNode<AudioStreamPlayer2D>("%CardFlipSound");
 		_cardHoverSoundPlayer = GetNode<AudioStreamPlayer2D>("%HoverSound");
+		_burnSoundPlayer = GetNode<AudioStreamPlayer2D>("%BurnSound");
 
 		_cardMaterial = GetNode<CollisionShape2D>("%CardCollisionShape").Material as ShaderMaterial;
 		_cardSprite = GetNode<AnimatedSprite2D>("%PlayingCard");
@@ -64,16 +67,10 @@ public partial class PlayingCardContainer : Control
 		HandleShadow();
 	}
 
-	private void OnArea2DMouseEntered()
+	public void AnimateShakeIn()
 	{
 		if (_hoverTween != null && _hoverTween.IsRunning())
 			_hoverTween.Kill();
-
-		if (_cardHoverSoundPlayer.Playing)
-			_cardHoverSoundPlayer.Stop();
-
-		_cardHoverSoundPlayer.Play();
-
 
 		_hoverTween = GetTree().CreateTween().SetEase(Tween.EaseType.Out).SetTrans(Tween.TransitionType.Elastic).SetParallel(true);
 		_hoverTween.TweenProperty(_cardSprite, "scale", new Vector2(1.05f, 1.05f), 0.5f);
@@ -89,7 +86,7 @@ public partial class PlayingCardContainer : Control
 		_rotateTween.TweenProperty(this, "rotation", 0.00, 0.1f);
 	}
 
-	private void OnArea2DMouseExited()
+	public void AnimateShakeOut()
 	{
 		if (_rotateTween != null && _rotateTween.IsRunning())
 			_rotateTween.Kill();
@@ -105,7 +102,23 @@ public partial class PlayingCardContainer : Control
 		_hoverTween.TweenProperty(_shadow, "scale", Vector2.One, 0.55f);
 	}
 
-	void HandleShadow()
+	private void OnArea2DMouseEntered()
+	{
+		if (_cardHoverSoundPlayer.Playing)
+			_cardHoverSoundPlayer.Stop();
+
+		_cardHoverSoundPlayer.PitchScale = (float)GD.RandRange(0.95, 1.3);
+		_cardHoverSoundPlayer.Play();
+
+		AnimateShakeIn();
+	}
+
+	private void OnArea2DMouseExited()
+	{
+		AnimateShakeOut();
+	}
+
+	private void HandleShadow()
 	{
 		Vector2 center = GetViewportRect().Size / 2.0f;
 
@@ -116,6 +129,20 @@ public partial class PlayingCardContainer : Control
 			Mathf.Lerp(0.0f, -Mathf.Sign(distance) * 10, Mathf.Abs(distance / center.X)),
 			_shadow.Position.Y
 		);
+	}
+
+	public void BurnCard()
+	{
+		_burnSoundPlayer.PitchScale = (float)GD.RandRange(0.95, 1.3);
+		_burnSoundPlayer.Play();
+		_cardSprite.UseParentMaterial = true;
+
+		if (_destroyTween != null && _destroyTween.IsRunning())
+			_destroyTween.Kill();
+
+		_destroyTween = GetTree().CreateTween().SetEase(Tween.EaseType.InOut).SetTrans(Tween.TransitionType.Cubic).SetParallel(true);
+		_destroyTween.TweenProperty(Material, "shader_parameter/dissolve_value", 0.0f, 0.8f).From(1.0f);
+		_destroyTween.TweenProperty(_shadow.Material, "shader_parameter/dissolve_value", 0.0f, 0.8f).From(1.0f);
 	}
 
 
@@ -136,6 +163,7 @@ public partial class PlayingCardContainer : Control
 
 	public void FlipUp()
 	{
+		_cardFlipSoundPlayer.PitchScale = (float)GD.RandRange(0.95, 1.3);
 		_cardFlipSoundPlayer.Play();
 		cardIsFlipped = true;
 		_animationPlayer.Play("flip_card");
@@ -143,6 +171,7 @@ public partial class PlayingCardContainer : Control
 
 	public void FlipDown()
 	{
+		_cardFlipSoundPlayer.PitchScale = (float)GD.RandRange(0.95, 1.3);
 		_cardFlipSoundPlayer.Play();
 		cardIsFlipped = false;
 		_animationPlayer.Play("flip_card_back");
