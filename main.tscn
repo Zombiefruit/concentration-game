@@ -68,7 +68,6 @@ script = ExtResource("13_ffywe")
 
 [node name="GameLayerContainer" type="CanvasLayer" parent="."]
 unique_name_in_owner = true
-visible = false
 
 [node name="Cards" type="GridContainer" parent="GameLayerContainer"]
 unique_name_in_owner = true
@@ -100,22 +99,25 @@ alignment = 1
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 0
-size_flags_vertical = 4
+size_flags_vertical = 6
 script = ExtResource("6_egulf")
 
 [node name="Seconds" type="Label" parent="GameLayerContainer/VBoxContainer/CountdownTimerContainer"]
+custom_minimum_size = Vector2(136.685, 0)
 layout_mode = 2
 theme = ExtResource("10_iyb1s")
 theme_override_font_sizes/font_size = 81
 text = "00"
+horizontal_alignment = 2
 
-[node name="Semicolon" type="Label" parent="GameLayerContainer/VBoxContainer/CountdownTimerContainer"]
+[node name="Colon" type="Label" parent="GameLayerContainer/VBoxContainer/CountdownTimerContainer"]
 layout_mode = 2
 theme = ExtResource("10_iyb1s")
 theme_override_font_sizes/font_size = 81
 text = ":"
 
 [node name="MilliSeconds" type="Label" parent="GameLayerContainer/VBoxContainer/CountdownTimerContainer"]
+custom_minimum_size = Vector2(136.685, 0)
 layout_mode = 2
 theme = ExtResource("10_iyb1s")
 theme_override_font_sizes/font_size = 81

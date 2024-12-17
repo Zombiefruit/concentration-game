@@ -1,6 +1,5 @@
 using Godot;
 using System;
-
 public partial class CountdownTimerContainer : HBoxContainer
 {
 	public int timeLimitInSeconds; // The time limit in seconds
@@ -11,12 +10,18 @@ public partial class CountdownTimerContainer : HBoxContainer
 
 	private Label _seconds;
 	private Label _milliSeconds;
+	private Label _colon;
+	private int _frameCounter = 0;
+	private Vector2 _originalSecondsPosition = new Vector2();
+	private Vector2 _originalMilliSecondsPosition = new Vector2();
+	private Vector2 _originalColonPosition = new Vector2();
 
 	public override void _Ready()
 	{
 		remainingTime = timeLimitInSeconds;
 		_seconds = GetNode<Label>("Seconds");
 		_milliSeconds = GetNode<Label>("MilliSeconds");
+		_colon = GetNode<Label>("Colon");
 	}
 
 	public override void _Process(double delta)
@@ -47,6 +52,59 @@ public partial class CountdownTimerContainer : HBoxContainer
 
 		_seconds.Text = $"{seconds:00}";
 		_milliSeconds.Text = $"{milliseconds:00}";
+
+
+		// start the shake effect
+		ShakeText(0.3f);
+
+		if (remainingTime / timeLimitInSeconds < 0.5 && remainingTime / timeLimitInSeconds > 0.25)
+		{
+			// increase the shake effect
+			ShakeText(0.7f);
+		}
+		else if (remainingTime / timeLimitInSeconds < 0.25 && remainingTime / timeLimitInSeconds > 0.1)
+		{
+			// increase the shake effect
+			ShakeText(1.2f, true);
+		}
+		else if (remainingTime / timeLimitInSeconds < 0.1)
+		{
+			// increase the shake effect
+			ShakeText(1.8f, true);
+		}
+
+
+	}
+
+	private void ShakeText(float strength, bool shouldChangeColor = false)
+	{
+		_originalSecondsPosition = _frameCounter == 0 ? _seconds.Position : _originalSecondsPosition;
+		_originalMilliSecondsPosition = _frameCounter == 0 ? _milliSeconds.Position : _originalMilliSecondsPosition;
+		_originalColonPosition = _frameCounter == 0 ? _colon.Position : _originalColonPosition;
+
+		if (shouldChangeColor)
+		{
+			_seconds.AddThemeColorOverride("font_color", new Color("#FFFF33"));
+			_milliSeconds.AddThemeColorOverride("font_color", new Color("#FFFF33"));
+			_colon.AddThemeColorOverride("font_color", new Color("#FFFF33"));
+		}
+
+		if (_frameCounter % 5 == 0)
+		{
+			GD.Print("resetting text");
+			_seconds.Position = _originalSecondsPosition;
+			_milliSeconds.Position = _originalMilliSecondsPosition;
+			_colon.Position = _originalColonPosition;
+		}
+		else
+		{
+			GD.Print("shaking text");
+			_seconds.Position += new Vector2(0, GD.RandRange(-1, 1) * strength);
+			_milliSeconds.Position += new Vector2(0, GD.RandRange(-1, 1) * strength);
+			_colon.Position += new Vector2(0, GD.RandRange(-1, 1) * strength);
+		};
+
+		_frameCounter++;
 	}
 }
 

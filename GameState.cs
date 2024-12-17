@@ -25,7 +25,7 @@ public partial class GameState : Node
 
 	private int _numberOfCardsFlipped = 0;
 	private int _numberOfCardsMatched = 0;
-	private int _gameTimeLimitInSeconds = 60;
+	private int _gameTimeLimitInSeconds = 30;
 
 	private Card[] _deck;
 	// Called when the node enters the scene tree for the first time.
