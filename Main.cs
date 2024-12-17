@@ -7,6 +7,7 @@ using System.Threading;
 public partial class Main : Node2D
 {
 	private GridContainer _cards;
+	private CanvasLayer _gameLayerContainer;
 	private GameState _gameState;
 	private PackedScene packedScene = (PackedScene)ResourceLoader.Load("res://playing_card.tscn");
 
@@ -18,6 +19,7 @@ public partial class Main : Node2D
 	{
 		GD.Randomize();
 		_cards = GetNode<GridContainer>("%Cards");
+		_gameLayerContainer = GetNode<CanvasLayer>("%GameLayerContainer");
 		_gameState = GetNode<GameState>("GameState");
 
 		Array.ForEach(_gameState.GetDeck(), card => GD.Print(card.suit + " " + card.rank));
@@ -56,7 +58,11 @@ public partial class Main : Node2D
 	public void OnPlayButtonPressed()
 	{
 		GetNode<Button>("%PlayButton").Hide();
-		GetNode<GridContainer>("%Cards").Show();
+		_gameLayerContainer.Show();
+		int gameTimeLimit = _gameState.GetGameTimeLimit();
+		CountdownTimerContainer countdownTimer = GetNode<CountdownTimerContainer>("%CountdownTimerContainer");
+		// countdownTimer.timeLimitInSeconds = gameTimeLimit;
+		countdownTimer.Start(gameTimeLimit);
 	}
 
 	private async void OnCardFlipped(int rank, string suit, ulong id)

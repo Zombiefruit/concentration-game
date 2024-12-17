@@ -1,23 +1,26 @@
-[gd_scene load_steps=7 format=3 uid="uid://bfnb5ugrj8rmk"]
+[gd_scene load_steps=10 format=3 uid="uid://bfnb5ugrj8rmk"]
 
 [ext_resource type="Script" path="res://Main.cs" id="1_qqgg0"]
 [ext_resource type="Material" uid="uid://jypf0n0ht6m" path="res://shaders/diamond-background.tres" id="1_wtv5y"]
 [ext_resource type="Shader" path="res://shaders/crt.gdshader" id="5_eujha"]
+[ext_resource type="Script" path="res://CountdownTimer.cs" id="5_tda7k"]
+[ext_resource type="AudioStream" uid="uid://hrqtdrmtyqkh" path="res://assets/music/synthwave-laser-drift-251660.mp3" id="6_7hlly"]
+[ext_resource type="Script" path="res://CountdownTimerContainer.cs" id="6_egulf"]
 [ext_resource type="Theme" uid="uid://bcopu2osb4hrq" path="res://theme.tres" id="10_iyb1s"]
 [ext_resource type="Script" path="res://GameState.cs" id="13_ffywe"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_m5xdf"]
 shader = ExtResource("5_eujha")
 shader_parameter/resolution = Vector2(1024, 768)
-shader_parameter/scan_line_amount = 0.207
-shader_parameter/warp_amount = 0.043
-shader_parameter/noise_amount = 0.03
-shader_parameter/interference_amount = 0.2
-shader_parameter/grille_amount = 0.1
+shader_parameter/scan_line_amount = 0.175
+shader_parameter/warp_amount = 0.0
+shader_parameter/noise_amount = 0.02
+shader_parameter/interference_amount = 0.15
+shader_parameter/grille_amount = 0.08
 shader_parameter/grille_size = 1.0
-shader_parameter/vignette_amount = 0.324
-shader_parameter/vignette_intensity = 0.4
-shader_parameter/aberation_amount = 0.5
+shader_parameter/vignette_amount = 0.161
+shader_parameter/vignette_intensity = 0.101
+shader_parameter/aberation_amount = 0.213
 shader_parameter/roll_line_amount = 0.0
 shader_parameter/roll_speed = 1.0
 shader_parameter/scan_line_strength = -8.0
@@ -59,16 +62,16 @@ size_flags_horizontal = 4
 size_flags_vertical = 4
 mouse_default_cursor_shape = 2
 theme = ExtResource("10_iyb1s")
-text = "Play"
+text = "Concentrate"
 
 [node name="GameState" type="Node" parent="."]
 script = ExtResource("13_ffywe")
 
-[node name="Game" type="CanvasLayer" parent="."]
-
-[node name="Cards" type="GridContainer" parent="Game"]
+[node name="GameLayerContainer" type="CanvasLayer" parent="."]
 unique_name_in_owner = true
-visible = false
+
+[node name="Cards" type="GridContainer" parent="GameLayerContainer"]
+unique_name_in_owner = true
 anchors_preset = 8
 anchor_left = 0.5
 anchor_top = 0.5
@@ -83,6 +86,55 @@ theme_override_constants/h_separation = 20
 theme_override_constants/v_separation = 20
 columns = 7
 
+[node name="VBoxContainer" type="VBoxContainer" parent="GameLayerContainer"]
+anchors_preset = -1
+anchor_left = 0.575
+anchor_right = 0.605
+offset_left = -240.5
+offset_right = 240.5
+offset_bottom = 183.0
+grow_horizontal = 2
+alignment = 1
+
+[node name="CountdownTimer" type="RichTextLabel" parent="GameLayerContainer/VBoxContainer"]
+unique_name_in_owner = true
+visible = false
+custom_minimum_size = Vector2(500, 100)
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 6
+theme = ExtResource("10_iyb1s")
+theme_override_font_sizes/normal_font_size = 81
+bbcode_enabled = true
+text = "test"
+script = ExtResource("5_tda7k")
+
+[node name="CountdownTimerContainer" type="HBoxContainer" parent="GameLayerContainer/VBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 0
+size_flags_vertical = 4
+script = ExtResource("6_egulf")
+
+[node name="Seconds" type="Label" parent="GameLayerContainer/VBoxContainer/CountdownTimerContainer"]
+layout_mode = 2
+theme = ExtResource("10_iyb1s")
+theme_override_font_sizes/font_size = 81
+text = "00"
+
+[node name="Semicolon" type="Label" parent="GameLayerContainer/VBoxContainer/CountdownTimerContainer"]
+layout_mode = 2
+theme = ExtResource("10_iyb1s")
+theme_override_font_sizes/font_size = 81
+text = ":"
+
+[node name="MilliSeconds" type="Label" parent="GameLayerContainer/VBoxContainer/CountdownTimerContainer"]
+layout_mode = 2
+theme = ExtResource("10_iyb1s")
+theme_override_font_sizes/font_size = 81
+text = "00"
+horizontal_alignment = 1
+
 [node name="CrtContainer" type="CanvasLayer" parent="."]
 
 [node name="CRT" type="ColorRect" parent="CrtContainer"]
@@ -93,5 +145,9 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 mouse_filter = 2
+
+[node name="MainMusic" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource("6_7hlly")
+autoplay = true
 
 [connection signal="pressed" from="UI/VBoxContainer/PlayButton" to="." method="OnPlayButtonPressed"]
