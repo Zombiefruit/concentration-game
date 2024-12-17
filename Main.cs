@@ -63,6 +63,18 @@ public partial class Main : Node2D
 		CountdownTimerContainer countdownTimer = GetNode<CountdownTimerContainer>("%CountdownTimerContainer");
 		// countdownTimer.timeLimitInSeconds = gameTimeLimit;
 		countdownTimer.Start(gameTimeLimit);
+		countdownTimer.Connect("TimeExpired", new Callable(this, nameof(TimerExpired)));
+	}
+
+	private async void TimerExpired()
+	{
+		GD.Print("Time's up!");
+		_cards.MouseFilter = Control.MouseFilterEnum.Stop;
+		GetTree().CallGroup("PlayingCards", "BurnCard");
+
+		await ToSignal(GetTree().CreateTimer(1.0f), SceneTreeTimer.SignalName.Timeout);
+
+		GetNode<AnimationPlayer>("%GameOverTextAnimator").Play("game_over_fade_in");
 	}
 
 	private async void OnCardFlipped(int rank, string suit, ulong id)
@@ -99,8 +111,6 @@ public partial class Main : Node2D
 			{
 				_flippedCards.ForEach(async card =>
 				{
-					card.allowClicks = false;
-					card.MouseDefaultCursorShape = Control.CursorShape.Arrow;
 					card.AnimateShakeIn();
 					card.BurnCard();
 					await ToSignal(GetTree().CreateTimer(0.8f), SceneTreeTimer.SignalName.Timeout);

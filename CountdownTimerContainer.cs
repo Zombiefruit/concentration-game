@@ -2,6 +2,8 @@ using Godot;
 using System;
 public partial class CountdownTimerContainer : HBoxContainer
 {
+	[Signal]
+	public delegate void TimeExpiredEventHandler();
 	public int timeLimitInSeconds; // The time limit in seconds
 	private float remainingTime; // Time left in the countdown
 
@@ -15,6 +17,7 @@ public partial class CountdownTimerContainer : HBoxContainer
 	private Vector2 _originalSecondsPosition = new Vector2();
 	private Vector2 _originalMilliSecondsPosition = new Vector2();
 	private Vector2 _originalColonPosition = new Vector2();
+	private AudioStreamPlayer2D _countdownSoundPlayer;
 
 	public override void _Ready()
 	{
@@ -22,6 +25,7 @@ public partial class CountdownTimerContainer : HBoxContainer
 		_seconds = GetNode<Label>("Seconds");
 		_milliSeconds = GetNode<Label>("MilliSeconds");
 		_colon = GetNode<Label>("Colon");
+		_countdownSoundPlayer = GetNode<AudioStreamPlayer2D>("CountdownSound");
 	}
 
 	public override void _Process(double delta)
@@ -57,6 +61,11 @@ public partial class CountdownTimerContainer : HBoxContainer
 		// start the shake effect
 		ShakeText(0.3f);
 
+		if (remainingTime < 25 && _countdownSoundPlayer.Playing == false)
+		{
+			_countdownSoundPlayer.Play();
+		}
+
 		if (remainingTime / timeLimitInSeconds < 0.5 && remainingTime / timeLimitInSeconds > 0.25)
 		{
 			// increase the shake effect
@@ -73,6 +82,14 @@ public partial class CountdownTimerContainer : HBoxContainer
 			ShakeText(1.8f, true);
 		}
 
+		if (remainingTime <= 0)
+		{
+			_isRunning = false;
+			_countdownSoundPlayer.Stop();
+			_seconds.Text = "00";
+			_milliSeconds.Text = "00";
+			EmitSignal(SignalName.TimeExpired);
+		}
 
 	}
 

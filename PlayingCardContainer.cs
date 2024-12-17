@@ -133,6 +133,8 @@ public partial class PlayingCardContainer : Control
 
 	public void BurnCard()
 	{
+		MouseDefaultCursorShape = CursorShape.Arrow;
+		allowClicks = false;
 		_burnSoundPlayer.PitchScale = (float)GD.RandRange(0.95, 1.3);
 		_burnSoundPlayer.Play();
 		_cardSprite.UseParentMaterial = true;
