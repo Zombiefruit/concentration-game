@@ -7,7 +7,7 @@
 [ext_resource type="Material" uid="uid://08c64hj26nco" path="res://shaders/ripple-material.tres" id="5_2jir2"]
 [ext_resource type="Texture2D" uid="uid://7iwuudhufo18" path="res://assets/Boardgame Pack/PNG/Cards/cardBack_blue2.png" id="6_mj15s"]
 [ext_resource type="Texture2D" uid="uid://bcudpxr0ogmn8" path="res://assets/Boardgame Pack/PNG/Cards/cardClubs2.png" id="7_3j62i"]
-[ext_resource type="Shader" uid="uid://eyrvu0dam2nv" path="res://shaders/burn-up.gdshader" id="8_mo7v7"]
+[ext_resource type="Shader" path="res://shaders/burn-up.gdshader" id="8_mo7v7"]
 [ext_resource type="AudioStream" uid="uid://cmdusj86e3ebs" path="res://assets/sounds/256799__deleted_user_4772965__match-ignition-8.wav" id="9_3y1w2"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_ufg7p"]

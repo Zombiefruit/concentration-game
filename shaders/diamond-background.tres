@@ -1,6 +1,6 @@
 [gd_resource type="ShaderMaterial" load_steps=2 format=3 uid="uid://jypf0n0ht6m"]
 
-[ext_resource type="Shader" uid="uid://cfdho47kj2b0j" path="res://shaders/diamond-background.gdshader" id="1_wjecu"]
+[ext_resource type="Shader" path="res://shaders/diamond-background.gdshader" id="1_wjecu"]
 
 [resource]
 shader = ExtResource("1_wjecu")
