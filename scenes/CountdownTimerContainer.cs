@@ -17,7 +17,7 @@ public partial class CountdownTimerContainer : HBoxContainer
 	private Vector2 _originalSecondsPosition = new Vector2();
 	private Vector2 _originalMilliSecondsPosition = new Vector2();
 	private Vector2 _originalColonPosition = new Vector2();
-	private AudioStreamPlayer2D _countdownSoundPlayer;
+	private AudioStreamPlayer _countdownSoundPlayer;
 
 	public override void _Ready()
 	{
@@ -25,7 +25,7 @@ public partial class CountdownTimerContainer : HBoxContainer
 		_seconds = GetNode<Label>("Seconds");
 		_milliSeconds = GetNode<Label>("MilliSeconds");
 		_colon = GetNode<Label>("Colon");
-		_countdownSoundPlayer = GetNode<AudioStreamPlayer2D>("CountdownSound");
+		_countdownSoundPlayer = GetNode<AudioStreamPlayer>("CountdownSound");
 	}
 
 	public override void _Process(double delta)

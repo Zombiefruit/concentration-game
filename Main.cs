@@ -2,37 +2,39 @@ using Godot;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Runtime.CompilerServices;
-using System.Threading;
-using System.Threading.Tasks;
 
 public partial class Main : Control
 {
 	private GridContainer _cards;
 	private GameLayerContainer _gameLayerContainer;
 	private GameState _gameState;
-	private PackedScene packedScene = (PackedScene)ResourceLoader.Load("res://playing_card.tscn");
+	private Control _ui;
+	private PackedScene packedScene = (PackedScene)ResourceLoader.Load("res://scenes/playing_card.tscn");
 	private CountdownTimerContainer _countdownTimerContainer;
 
 	private int _numberOfCardsFlipped = 0;
 	private bool _beginRound = false;
 
 	private float _shuffleInTimeout = 0.35f;
-	private AudioStreamPlayer2D _playButtonSound;
-	List<PlayingCardContainer> _flippedCards = new List<PlayingCardContainer>();
+	private AudioStreamPlayer _playButtonSound;
+	private List<PlayingCardContainer> _flippedCards = new List<PlayingCardContainer>();
+	private OptionButton _difficultySelect;
 
 	// Called when the node enters the scene tree for the first time.
 	public override void _Ready()
 	{
 		GD.Randomize();
 		_gameLayerContainer = GetNode<GameLayerContainer>("%GameLayerContainer");
-		_playButtonSound = GetNode<AudioStreamPlayer2D>("%PlayButtonSound");
+		_playButtonSound = GetNode<AudioStreamPlayer>("%PlayButtonSound");
 		_gameLayerContainer.Hide();
 		_cards = GetNode<GridContainer>("%GameLayerContainer/%Cards");
 		_gameState = GetNode<GameState>("%GameState");
+		_ui = GetNode<Control>("%UI");
+
+		_difficultySelect = GetNode<OptionButton>("%DifficultySelect");
+		SetDifficultySelectOptions(_difficultySelect);
 
 		_gameLayerContainer.Connect("Retry", new Callable(this, nameof(ResetGame)));
-
 		_gameState.Connect("RoundWon", new Callable(this, nameof(RoundWon)));
 
 		_countdownTimerContainer = _gameLayerContainer.GetCountdownTimerContainer();
@@ -46,10 +48,16 @@ public partial class Main : Control
 
 	public async void OnPlayButtonPressed()
 	{
+		int selectedDifficultyIndex = _difficultySelect.GetSelectedId();
+		Difficulty selectedDifficulty = (Difficulty)selectedDifficultyIndex;
+		_gameState.Init(selectedDifficulty);
+
+		SetGridColumns();
 		InitDeck();
+
 		_playButtonSound.PitchScale = 0.5f;
 		_playButtonSound.Play(0.5f);
-		GetNode<Button>("%PlayButton").Hide();
+		_ui.Hide();
 		_gameLayerContainer.Show();
 		int gameTimeLimit = _gameState.GetGameTimeLimit();
 
@@ -62,6 +70,33 @@ public partial class Main : Control
 	{
 		_playButtonSound.PitchScale = 1.0f;
 		_playButtonSound.Play(0.8f);
+	}
+
+	private void SetDifficultySelectOptions(OptionButton difficultySelect)
+	{
+		difficultySelect.Clear();
+
+		foreach (Difficulty difficulty in Enum.GetValues(typeof(Difficulty)))
+		{
+			difficultySelect.AddItem(difficulty.ToString());
+		}
+	}
+
+	private void SetGridColumns()
+	{
+		int deckSize = _gameState.GetDeckSize();
+
+		if (deckSize < 20)
+		{
+			_gameLayerContainer.SetCardGridColumns(_gameState.GetDeckSize() / 2);
+		}
+		else
+		{
+			_gameLayerContainer.SetCardGridColumns(_gameState.GetDeckSize() / 4);
+		}
+
+
+
 	}
 
 	private void InitDeck()
@@ -100,7 +135,7 @@ public partial class Main : Control
 		{
 			int i = 0;
 
-			GetNode<AudioStreamPlayer2D>("%CardShuffleIn").Play(0.9f);
+			GetNode<AudioStreamPlayer>("%CardShuffleIn").Play(0.9f);
 
 			foreach (PlayingCardContainer card in _cards.GetChildren().OfType<PlayingCardContainer>())
 			{
@@ -129,7 +164,7 @@ public partial class Main : Control
 		_flippedCards.Clear();
 		_numberOfCardsFlipped = 0;
 		_gameState.Reset();
-		GetNode<Button>("%PlayButton").Show();
+		_ui.Show();
 
 		_cards.GetChildren().OfType<PlayingCardContainer>().ToList().ForEach(card =>
 		{

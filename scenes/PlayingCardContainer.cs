@@ -23,9 +23,9 @@ public partial class PlayingCardContainer : Control
 	public bool allowClicks = true;
 	public ulong id;
 	private AnimationPlayer _animationPlayer;
-	private AudioStreamPlayer2D _cardFlipSoundPlayer;
-	private AudioStreamPlayer2D _cardHoverSoundPlayer;
-	private AudioStreamPlayer2D _burnSoundPlayer;
+	private AudioStreamPlayer _cardFlipSoundPlayer;
+	private AudioStreamPlayer _cardHoverSoundPlayer;
+	private AudioStreamPlayer _burnSoundPlayer;
 	private ShaderMaterial _cardMaterial;
 	private AnimatedSprite2D _cardSprite;
 	private ShaderMaterial _highlightShader = ResourceLoader.Load("res://shaders/highlight-material.tres") as ShaderMaterial;
@@ -43,9 +43,9 @@ public partial class PlayingCardContainer : Control
 	public override void _Ready()
 	{
 		_animationPlayer = GetNode<AnimationPlayer>("%CardAnimationPlayer");
-		_cardFlipSoundPlayer = GetNode<AudioStreamPlayer2D>("%CardFlipSound");
-		_cardHoverSoundPlayer = GetNode<AudioStreamPlayer2D>("%HoverSound");
-		_burnSoundPlayer = GetNode<AudioStreamPlayer2D>("%BurnSound");
+		_cardFlipSoundPlayer = GetNode<AudioStreamPlayer>("%CardFlipSound");
+		_cardHoverSoundPlayer = GetNode<AudioStreamPlayer>("%HoverSound");
+		_burnSoundPlayer = GetNode<AudioStreamPlayer>("%BurnSound");
 
 		_cardMaterial = GetNode<CollisionShape2D>("%CardCollisionShape").Material as ShaderMaterial;
 		_cardSprite = GetNode<AnimatedSprite2D>("%PlayingCard");

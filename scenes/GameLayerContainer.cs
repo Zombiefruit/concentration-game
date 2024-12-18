@@ -8,9 +8,10 @@ public partial class GameLayerContainer : CanvasLayer
 	private CountdownTimerContainer _countdownTimerContainer;
 	private AnimationPlayer _textAnimator;
 	private Control _retryButton;
+	private GridContainer _cardGrid;
 	private RichTextLabel _gameOverText;
 	private RichTextLabel _winnerText;
-	private AudioStreamPlayer2D _retryButtonSound;
+	private AudioStreamPlayer _retryButtonSound;
 
 	// Called when the node enters the scene tree for the first time.
 	public override void _Ready()
@@ -20,7 +21,13 @@ public partial class GameLayerContainer : CanvasLayer
 		_retryButton = GetNode<Control>("%RetryButtonContainer");
 		_gameOverText = GetNode<RichTextLabel>("%GameOverText");
 		_winnerText = GetNode<RichTextLabel>("%WinnerText");
-		_retryButtonSound = GetNode<AudioStreamPlayer2D>("%RetryButtonSound");
+		_retryButtonSound = GetNode<AudioStreamPlayer>("%RetryButtonSound");
+		_cardGrid = GetNode<GridContainer>("%Cards");
+	}
+
+	public void SetCardGridColumns(int columns)
+	{
+		_cardGrid.Columns = columns;
 	}
 
 	public void OnRetryButtonMouseEntered()

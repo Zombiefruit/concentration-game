@@ -1,6 +1,14 @@
 using Godot;
 using System.Collections.Generic;
 
+public enum Difficulty
+{
+	Baby,
+	BiggerBaby,
+	BiggestBaby,
+	Toddler
+}
+
 public enum Suit
 {
 	Hearts,
@@ -20,8 +28,6 @@ public struct Card
 
 public partial class GameState : Node
 {
-	[Export(PropertyHint.Range, "2, 20, 2")]
-	public int deckSize = 14;
 
 	[Signal]
 	public delegate void RoundWonEventHandler();
@@ -29,6 +35,7 @@ public partial class GameState : Node
 	[Signal]
 	public delegate void ScoreUpdatedEventHandler(int newScore);
 
+	private int _deckSize = 14;
 	private int _numberOfCardsFlipped = 0;
 	private int _numberOfCardsMatched = 0;
 	private int _gameTimeLimitInSeconds = 25;
@@ -36,17 +43,11 @@ public partial class GameState : Node
 	private bool _roundOver;
 
 	private Card[] _deck;
-	// Called when the node enters the scene tree for the first time.
-	public override void _Ready()
-	{
-		GenerateDeck();
-		_roundOver = false;
-	}
 
 	// Called every frame. 'delta' is the elapsed time since the previous frame.
 	public override void _Process(double delta)
 	{
-		if (_numberOfCardsMatched == deckSize && !_roundOver)
+		if (_numberOfCardsMatched == _deckSize && !_roundOver)
 		{
 			GD.Print("Round over!");
 			EmitSignal(SignalName.RoundWon);
@@ -54,17 +55,38 @@ public partial class GameState : Node
 		}
 	}
 
+	public void Init(Difficulty difficulty)
+	{
+		SetDeckSize(difficulty);
+		SetTimeLimit(difficulty);
+		GenerateDeck();
+		_roundOver = false;
+	}
+
+	#region Getters
+
 	public int GetGameTimeLimit()
 	{
 		return _gameTimeLimitInSeconds;
 	}
+
+	public int GetDeckSize()
+	{
+		return _deckSize;
+	}
+
+	public Card[] GetDeck()
+	{
+		return _deck;
+	}
+
+	#endregion
 
 	public void Reset()
 	{
 		_numberOfCardsMatched = 0;
 		_numberOfCardsFlipped = 0;
 		_roundOver = false;
-		GenerateDeck();
 	}
 
 	public bool CheckMatch(Card card1, Card card2)
@@ -84,9 +106,46 @@ public partial class GameState : Node
 		}
 	}
 
+	public void SetDeckSize(Difficulty difficulty)
+	{
+		switch (difficulty)
+		{
+			case Difficulty.Baby:
+				_deckSize = 10;
+				break;
+			case Difficulty.BiggerBaby:
+				_deckSize = 14;
+				break;
+			case Difficulty.BiggestBaby:
+				_deckSize = 20;
+				break;
+			case Difficulty.Toddler:
+				_deckSize = 24;
+				break;
+		}
+	}
+
+	public void SetTimeLimit(Difficulty difficulty)
+	{
+		switch (difficulty)
+		{
+			case Difficulty.Baby:
+				_gameTimeLimitInSeconds = 60;
+				break;
+			case Difficulty.BiggerBaby:
+				_gameTimeLimitInSeconds = 45;
+				break;
+			case Difficulty.BiggestBaby:
+				_gameTimeLimitInSeconds = 40;
+				break;
+			case Difficulty.Toddler:
+				_gameTimeLimitInSeconds = 30;
+				break;
+		}
+	}
+
 	private void GenerateDeck()
 	{
-		// Create a RandomNumberGenerator instance
 		RandomNumberGenerator rng = new RandomNumberGenerator();
 		rng.Randomize();
 
@@ -105,7 +164,8 @@ public partial class GameState : Node
 
 		// Randomly pick deckSize / 2 unique cards from the full pool
 		List<Card> selectedCards = new List<Card>();
-		for (int i = 0; i < deckSize / 2; i++)
+
+		for (int i = 0; i < _deckSize / 2; i++)
 		{
 			int randomIndex = rng.RandiRange(0, allCards.Count - 1);
 			selectedCards.Add(allCards[randomIndex]);
@@ -134,10 +194,5 @@ public partial class GameState : Node
 			deck[i] = deck[randomIndex];
 			deck[randomIndex] = temp;
 		}
-	}
-
-	public Card[] GetDeck()
-	{
-		return _deck;
 	}
 }
