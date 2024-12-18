@@ -1,16 +1,16 @@
 [gd_scene load_steps=15 format=3 uid="uid://bfnb5ugrj8rmk"]
 
-[ext_resource type="Script" uid="uid://ogjl1tvd5hhp" path="res://Main.cs" id="1_qqgg0"]
+[ext_resource type="Script" path="res://Main.cs" id="1_qqgg0"]
 [ext_resource type="Material" uid="uid://jypf0n0ht6m" path="res://shaders/diamond-background.tres" id="1_wtv5y"]
-[ext_resource type="Script" uid="uid://dbmje8tiw1nvy" path="res://Ui.cs" id="3_efxa6"]
-[ext_resource type="Shader" uid="uid://cvxkol0tktbk3" path="res://shaders/invert-background.gdshader" id="4_4c57u"]
+[ext_resource type="Script" path="res://Ui.cs" id="3_efxa6"]
+[ext_resource type="Shader" path="res://shaders/invert-background.gdshader" id="4_4c57u"]
 [ext_resource type="PackedScene" uid="uid://cmra3pkww1i4j" path="res://scenes/game_layer_container.tscn" id="5_1mcfy"]
-[ext_resource type="Shader" uid="uid://ck5ufq0eb63kv" path="res://shaders/crt.gdshader" id="5_eujha"]
+[ext_resource type="Shader" path="res://shaders/crt.gdshader" id="5_eujha"]
 [ext_resource type="AudioStream" uid="uid://hrqtdrmtyqkh" path="res://assets/music/synthwave-laser-drift-251660.mp3" id="6_7hlly"]
 [ext_resource type="AudioStream" uid="uid://b2jug3ls4u48i" path="res://assets/sounds/765639__chrisgrundlingh__shuffling-cards.wav" id="8_085kk"]
 [ext_resource type="AudioStream" uid="uid://d2y46ivonvj8j" path="res://assets/Boardgame Pack/Bonus/chipsCollide1.ogg" id="9_yy1vq"]
 [ext_resource type="Theme" uid="uid://bcopu2osb4hrq" path="res://theme.tres" id="10_iyb1s"]
-[ext_resource type="Script" uid="uid://tu3ttbyoh1hw" path="res://scenes/GameState.cs" id="13_ffywe"]
+[ext_resource type="Script" path="res://scenes/GameState.cs" id="13_ffywe"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_efxa6"]
 shader = ExtResource("4_4c57u")

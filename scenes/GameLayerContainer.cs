@@ -40,10 +40,8 @@ public partial class GameLayerContainer : CanvasLayer
 	{
 		_retryButtonSound.PitchScale = 0.5f;
 		_retryButtonSound.Play(0.4f);
-		_retryButton.Hide();
-		_gameOverText.Hide();
-		_winnerText.Hide();
-		_textAnimator.Seek(0);
+		_textAnimator.Play("RESET");
+		_textAnimator.Advance(0);
 		EmitSignal(SignalName.Retry);
 	}
 
@@ -54,17 +52,13 @@ public partial class GameLayerContainer : CanvasLayer
 
 	public void PlayGameOverAnimation()
 	{
-		_textAnimator.Seek(0);
+		_textAnimator.Advance(0);
 		_textAnimator.Play("game_over_fade_in");
-		_gameOverText.Show();
-		_retryButton.Show();
 	}
 
 	public void PlayGameWonAnimation()
 	{
-		_textAnimator.Seek(0);
+		_textAnimator.Advance(0);
 		_textAnimator.Play("winner_fade_in");
-		_winnerText.Show();
-		_retryButton.Show();
 	}
 }
