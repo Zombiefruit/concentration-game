@@ -48,6 +48,7 @@ public partial class Main : Control
 
 	public async void OnPlayButtonPressed()
 	{
+		GD.Print("Play button pressed");
 		int selectedDifficultyIndex = _difficultySelect.GetSelectedId();
 		Difficulty selectedDifficulty = (Difficulty)selectedDifficultyIndex;
 		_gameState.Init(selectedDifficulty);
