@@ -1,6 +1,6 @@
 [gd_resource type="ShaderMaterial" load_steps=2 format=3 uid="uid://08c64hj26nco"]
 
-[ext_resource type="Shader" path="res://shaders/ripple.gdshader" id="1_4a1m1"]
+[ext_resource type="Shader" uid="uid://spmk6tpm0a8r" path="res://shaders/ripple.gdshader" id="1_4a1m1"]
 
 [resource]
 resource_local_to_scene = true

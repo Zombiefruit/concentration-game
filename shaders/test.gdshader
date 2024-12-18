@@ -69,5 +69,3 @@ void fragment() {
 	}
 	COLOR *= effect(TEXTURE_PIXEL_SIZE, polarCoords);
 }
-
-

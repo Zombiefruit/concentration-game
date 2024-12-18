@@ -1,10 +1,10 @@
 [gd_scene load_steps=12 format=3 uid="uid://cmra3pkww1i4j"]
 
-[ext_resource type="Script" path="res://scenes/GameLayerContainer.cs" id="1_0y7y4"]
-[ext_resource type="Script" path="res://scenes/CountdownTimerContainer.cs" id="1_yay2v"]
+[ext_resource type="Script" uid="uid://d3a3kuyeisxlj" path="res://scenes/GameLayerContainer.cs" id="1_0y7y4"]
+[ext_resource type="Script" uid="uid://ln1i7xr1282f" path="res://scenes/CountdownTimerContainer.cs" id="1_yay2v"]
 [ext_resource type="Theme" uid="uid://bcopu2osb4hrq" path="res://theme.tres" id="2_0t3eb"]
 [ext_resource type="AudioStream" uid="uid://1y45t35tmcov" path="res://assets/sounds/countdown.wav" id="3_1qlxm"]
-[ext_resource type="Shader" path="res://shaders/glitch.gdshader" id="5_mig46"]
+[ext_resource type="Shader" uid="uid://cq7gl2n5j6p4j" path="res://shaders/glitch.gdshader" id="5_mig46"]
 [ext_resource type="AudioStream" uid="uid://d2y46ivonvj8j" path="res://assets/Boardgame Pack/Bonus/chipsCollide1.ogg" id="6_324qv"]
 
 [sub_resource type="Animation" id="Animation_3fmdn"]
