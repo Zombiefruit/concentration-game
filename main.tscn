@@ -85,7 +85,7 @@ grow_horizontal = 2
 grow_vertical = 2
 mouse_filter = 2
 
-[node name="MainMusic" type="AudioStreamPlayer2D" parent="."]
+[node name="MainMusic" type="AudioStreamPlayer" parent="."]
 stream = ExtResource("6_7hlly")
 autoplay = true
 
@@ -95,10 +95,12 @@ stream = ExtResource("8_085kk")
 volume_db = 12.403
 pitch_scale = 4.0
 attenuation = 0.378929
+panning_strength = 0.0
 
 [node name="PlayButtonSound" type="AudioStreamPlayer2D" parent="."]
 unique_name_in_owner = true
 stream = ExtResource("9_yy1vq")
+panning_strength = 0.0
 
 [connection signal="mouse_entered" from="UI/VBoxContainer/PlayButton" to="." method="OnPlayButtonMouseEntered"]
 [connection signal="pressed" from="UI/VBoxContainer/PlayButton" to="." method="OnPlayButtonPressed"]

@@ -102,9 +102,9 @@ tracks/1/keys = {
 
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_gxl5c"]
 _data = {
-"RESET": SubResource("Animation_3fmdn"),
-"game_over_fade_in": SubResource("Animation_tmjec"),
-"winner_fade_in": SubResource("Animation_hxnq1")
+&"RESET": SubResource("Animation_3fmdn"),
+&"game_over_fade_in": SubResource("Animation_tmjec"),
+&"winner_fade_in": SubResource("Animation_hxnq1")
 }
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_yhjot"]
@@ -135,9 +135,9 @@ theme_override_constants/v_separation = 20
 columns = 7
 
 [node name="VBoxContainer" type="VBoxContainer" parent="."]
-anchors_preset = -1
-anchor_left = 0.575
-anchor_right = 0.605
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
 offset_left = -240.5
 offset_right = 240.5
 offset_bottom = 183.0
@@ -147,7 +147,7 @@ alignment = 1
 [node name="CountdownTimerContainer" type="HBoxContainer" parent="VBoxContainer"]
 unique_name_in_owner = true
 layout_mode = 2
-size_flags_horizontal = 0
+size_flags_horizontal = 4
 size_flags_vertical = 6
 script = ExtResource("1_yay2v")
 
@@ -177,6 +177,7 @@ horizontal_alignment = 1
 unique_name_in_owner = true
 stream = ExtResource("3_1qlxm")
 volume_db = 1.909
+panning_strength = 0.0
 
 [node name="GameOverText" type="RichTextLabel" parent="."]
 unique_name_in_owner = true
@@ -205,7 +206,7 @@ text = "[wave amp=50.0 freq=5.0 connected=1][center]Time's Up![/center][/wave]"
 [node name="TextAnimator" type="AnimationPlayer" parent="."]
 unique_name_in_owner = true
 libraries = {
-"": SubResource("AnimationLibrary_gxl5c")
+&"": SubResource("AnimationLibrary_gxl5c")
 }
 
 [node name="WinnerText" type="RichTextLabel" parent="."]
